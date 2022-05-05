@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png"/>
+</head>
+
+<body>
+
+<!-- Bar de Navigation -->
+<!-- include grace a includer.js -->
+<header></header></br>
+<!-- Autre Méthode: (sinon php) -->
+<!-- <iframe src="html/navbar.html" onload="this.insertAdjacentHTML('afterend', (this.contentDocument.body||this.contentDocument).innerHTML);this.remove()"></iframe> -->
+
+<!-- Fin Bar de Navigation -->
+
+<!-- Canvas de la simulation -->
+<div class="article" style = "text-align:center;">
+<canvas id="board" width="500" height="500"></canvas>
+<!-- Fin -->
+
+</br>
+
+<!-- Formulaire pour les parametres de la simulation -->
+<div style = "text-align:center;">
+<div id = "compteur"></div> 
+
+</br>
+
+<input id="restartSim" type="button" value="Redémarrer la Simulation" onclick="restart();" />
+
+</br>
+
+Pause: 
+<input id="pause" type="checkbox"/>
+
+</br>
+
+Mettre en pause à une certaine génération: <input type="number" min="0" value="100" id="pauseGenerationNumber"> <input id="pauseGeneration" type="checkbox"/>
+
+</br>
+</br>
+
+Longueur du tableau:
+<input type="number" min="10" max="800" value="500" id="longueurTableau">
+
+</br>
+
+Hauteur du tableau:
+<input type="number" min="10" max="800" value="500" id="hauteurTableau">
+
+</br>
+
+Longueur des cases:
+<input type="number" min="1" max="200" value="10" id="longueurCase">
+
+</br>
+
+Hauteur des cases:
+<input type="number" min="1" max="200" value="10" id="hauteurCase">
+
+</br>
+
+Probabilité de parsemage:
+<input type="number" min="100" max="100000" value="1000" id="probaParsemage">
+
+</br>
+
+Génération par secondes:
+<input type="number" min="1" max="120" value="60" id="FPS">
+
+</br>
+</br>
+
+<!-- Parametre des especes -->
+<input id="ajouterEspece" type="button" value="Ajouter une espèce" onclick="ajouterEspece();" />
+<input id="supprimerEspece" type="button" value="Supprimer une espèce" onclick="supprimerEspece();" />
+<div id= "gestionEspeces"></div>
+</br>
+</br>
+
+<!-- Telechargement du CSV -->
+<input id="downloadCSV" type="button" value="Télécharger les données sous format .CSV" onclick="downloadCSV(especesDataCached);" />
+</div>
+
+<!-- Fin -->
+
+</br>
+
+<!-- Canvas du Graphique -->
+<div style = "text-align:center;">
+<canvas id="graph" width="800" height="800"></canvas>
+</div>
+<!-- Fin -->
+
+</div>
+
+</body>
+
+<script src="scripts/includer.js"></script>
+<script src="scripts/case.js"></script>
+<script src="scripts/graph.js"></script>
+<script src="scripts/exportCSV.js"></script>
+<script src ="scripts/simulation.js"></script>
+
+<script>
+
+home = true;
+
+// Debut de la simulation
+afficheEspece();
+restart();
+main();
+graph(1,1,'#7c9ac2');
+
+</script>
+</html>

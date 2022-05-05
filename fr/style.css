@@ -1,0 +1,162 @@
+/* GLOBAL */
+
+body {
+	font-family: Verdana;
+	font-size: medium;
+	background-color: #edf2f8;
+	margin: 0;
+}
+
+/* FIN GLOBAL */
+
+/* HEADER --> Bar de navigation horizontale */
+
+header ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+header li {
+  float: left;
+  border-right:1px solid black;
+}
+
+header li:last-child {
+  border-right: none;
+}
+
+header li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+header li a:hover:not(.active) {
+  background-color: #111;
+}
+
+/* FIN HEADER */
+
+
+/* FOOTER */
+
+footer table {
+	width: 100%;
+}
+
+footer td {
+	padding-left: 5%;
+	padding-right: 5%;
+	width: 300 px;
+	vertical-align: baseline;
+}
+
+footer {
+	color: white;
+	background-color: #333;
+	margin: 0;
+}
+
+footer a:link {
+	color: #F0FFF0;
+}
+
+footer a:visited {
+	color: #FAEBD7;
+}
+
+footer a:hover {
+	color: #FFF0F5;
+}
+
+footer a:active {
+	color: white;
+}
+
+/* FIN FOOTER */
+
+
+/* ARTICLE */
+
+.article {
+	margin-left: 5%;
+	margin-right: 5%;
+	line-height: 200%;
+	background-color: white;
+	padding-right: 10%;
+	padding-left: 10%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+.article img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 2%;
+	padding-bottom: 2%;
+	max-width:100%;
+    height:auto;
+}
+
+.article p {
+	text-align: justify;
+}
+
+/* FIN ARTICLE */
+
+/* SKIPLINK */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000000;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* FIN SKIPLINK */
+
+/* LABEL */
+
+.hiddenLabel {
+	display: block;
+	position: absolute; 
+	top:-1000px; 
+	left:-1000px;
+}
+
+/* FIN LABEL */
+
+/* MOBILE ONLY HTML */
+
+@media only screen and (max-device-width: 480px) {
+	.show-mobile {
+		display: inline;
+	}
+	
+	.hide-mobile {
+		display: none;
+	}
+}
+
+@media only screen and (min-device-width: 481px) {
+	.show-mobile {
+		display: none;
+	}
+	
+	.hide-mobile {
+		display: inline;
+	}	
+}
