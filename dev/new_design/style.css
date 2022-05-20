@@ -1,1 +1,21 @@
+body {
+	margin : 0;
+	font-family : Helvetica;
+	overflow-x : hidden;
+}
 
+#simulation_description {
+    margin-left: 5%;
+    margin-right: 5%;
+    
+	line-height: 2;
+    
+	background-color: white;
+    
+	padding-right: 10%;
+    padding-left: 10%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+
+	text-align : justify;
+}

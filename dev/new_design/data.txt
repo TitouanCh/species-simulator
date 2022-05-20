@@ -1,0 +1,9 @@
+For each application :
+
+Title,
+Catchphrase,
+Type: Javascript or WebGL,
+HTML article,
+Param,
+Code,
+Tags
