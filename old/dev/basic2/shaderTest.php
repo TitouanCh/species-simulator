@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+HI!
+
+<main id="main">
+
+<canvas id="gl" width="1024" height="600"></canvas>
+</br>
+BOTTOM TEXT
+
+<script id="vertex-shader-2d" type="notjs">
+attribute vec2 a_position;
+ 
+uniform vec2 u_resolution;
+ 
+void main() {
+    // convert the position from pixels to 0.0 to 1.0
+    vec2 zeroToOne = a_position / u_resolution;
+ 
+    // convert from 0->1 to 0->2
+    vec2 zeroToTwo = zeroToOne * 2.0;
+ 
+    // convert from 0->2 to -1->+1 (clip space)
+    vec2 clipSpace = zeroToTwo - 1.0;
+ 
+	gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+}
+ 
+</script>
+ 
+<script id="fragment-shader-2d" type="notjs">
+precision mediump float;
+
+uniform vec4 u_color;
+
+void main() {
+	gl_FragColor = u_color;
+}
+</script>
+
+<script src="shaderApp.js"></script>
+
+</main>
+
+</body>
+
+</html>

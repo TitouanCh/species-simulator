@@ -1,0 +1,50 @@
+TITLE
+Species Simulator
+;
+
+PAGETITLE
+species_simulator
+;
+
+SHORT_DESC
+An online stochastic species simulator, useful for studying interactions between invasive and endemic species...
+;
+
+LONG_DESC
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus sodales, pulvinar velit sit amet, auctor est. Aenean porttitor ipsum ut neque pretium interdum. Maecenas facilisis quis nunc nec commodo. In hac habitasse platea dictumst. Curabitur libero libero, cursus sit amet purus eget, tempus vulputate metus. In sem augue, faucibus vel hendrerit a, gravida vel enim. Phasellus nec odio quam. In cursus nulla a luctus pellentesque. Cras eget ipsum eu est venenatis lobortis ac vel nulla. Aliquam et turpis interdum, eleifend purus et, consectetur lacus. Nulla efficitur accumsan augue vitae molestie. Ut vitae laoreet ante. Nullam dictum a turpis quis tempus.
+;
+
+TYPE
+js
+;
+
+SCRIPTS
+/species-simulator/case.js
+/species-simulator/exportCSV.js
+/species-simulator/graphEN.js
+/species-simulator/simulationEN.js
+;
+
+PARAMETERS
+COUNTER individual_number "Number of individuals: "
+COUNTER ressource_number "Number of ressources: "
+--
+BUTTON restart_simulation "Restart Simulation"
+CHECKBOX pause_simulation "Pause: "
+NUMBER+CHECKBOX pause_at_generation "Pause at a certain generation: "
+--
+NUMBER width_simulation "Width of simulation: "
+NUMBER height_simulation "Height of simulation: "
+NUMBER width_cell "Width of cells: "
+NUMBER height_cell "Height of cells: "
+NUMBER colonization_value "1/Probability of colonization on first pass: "
+NUMBER fps "Generation per second: "
+--
+DIV speciesGest
+--
+--
+BUTTON downloadCSV "Download data in .CSV format"
+--
+CANVAS simulation_graph
+;
+
