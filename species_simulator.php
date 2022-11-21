@@ -6,7 +6,7 @@
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 </head>
 <body>
-<main id = 'Species Simulator'>
+<main id='Species Simulator'>
 <div id='Species Simulator' class='simulation_title'>
 <h1>Species Simulator</h1>
 <h2>Species Simulator - Species-Simulator.com</h2>
