@@ -9,7 +9,7 @@
 <body>
 <main id = 'Species Simulator'>
 
-<header>
+<header style="position: sticky; top: 0; width: 100%">
 <ul style="background: linear-gradient(0.25turn, #333 35%, #000);">
 <li><a href="/en/index.php" style="font-weight: bold;">LOGO -- Species-Simulator.com</a></li>
 <li class="dropdown">
@@ -58,35 +58,49 @@ function resizeTaskBar() {
 		for (let i = 0; i < desktop_menu.length; i++) {
 			desktop_menu[i].style.display = "none";
 		}
-		console.log("phone");
 	}
 	else {
 		phone_menu.style.display = "none";
 		for (let i = 0; i < desktop_menu.length; i++) {
 			desktop_menu[i].style.display = "initial";
 		}
-		console.log("desktop");
 	}
 }
 
 resizeTaskBar();
 addEventListener("resize", (event) => {resizeTaskBar()});
 </script>
-
 </header>
 
+<main id="content">
+<div class="article">
+<header>
 <div id='Species Simulator' class='simulation_title'>
 <h1>Species Simulator</h1>
 <h2>Species Simulator - Species-Simulator.com</h2>
 </div>
+</header>
+
+<div>
 <div id='Species Simulator online simulator' class='online_simulator'>
 <canvas id='Species Simulator simulation' class='simulation_canvas'  width = '900' height='1525'>
 </div>
+
 <div id='Species Simulator parameters' class='simulation_parameters'>
 </div>
+<script src='./scripts/utils.js'></script>
+<script src='./scripts/Ssimulation.js'></script>
+<script src='./scripts/Species_Cell.js'></script>
+<script src='./scripts/species_simulator.js'></script>
+</div>
+
 <div id='Species Simulator' description class='simulation_description'>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus sodales, pulvinar velit sit amet, auctor est. Aenean porttitor ipsum ut neque pretium interdum. Maecenas facilisis quis nunc nec commodo. In hac habitasse platea dictumst. Curabitur libero libero, cursus sit amet purus eget, tempus vulputate metus. In sem augue, faucibus vel hendrerit a, gravida vel enim. Phasellus nec odio quam. In cursus nulla a luctus pellentesque. Cras eget ipsum eu est venenatis lobortis ac vel nulla. Aliquam et turpis interdum, eleifend purus et, consectetur lacus. Nulla efficitur accumsan augue vitae molestie. Ut vitae laoreet ante. Nullam dictum a turpis quis tempus.
 </div>
+
 <script src='./scripts/simulation_resize.js'></script>
+</div>
+</main>
+
 </body>
 </html>

@@ -44,8 +44,6 @@ var especesDataCached = especesData.slice();
 var nextEspeceBase = []
 var generation = 0
 
-
-
 // Parseme aléatoirement quelques animaux d'espèces différentes
 function parsemer() {
 	if (parsemageType == 1) {
