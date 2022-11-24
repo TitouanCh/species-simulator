@@ -14,17 +14,20 @@ species_simulation.canvas_height = 400;
 species_simulation.canvas_width = 400;
 species_simulation.cell_height = 10;
 species_simulation.cell_width = 10;
+species_simulation.ratios = [species_simulation.canvas_width, species_simulation.canvas_height, species_simulation.cell_width, species_simulation.cell_height];
 species_simulation.start = species_start;
 
 startSimulation(species_simulation);
 
 function species_ready() {
-    this.start(this.species_data, this.grid);
-    console.log(this.grid);
+    this.start(this.species_data, this.ratios);
 }
 
 function species_main() {
-
+	setTimeout(() => {
+		species_draw(this.grid, this.ratios, this.board_ctx);
+		this.main();
+	}, 1000/this.FPS);
 }
 
 // Randomly 'sprinkle' species on a grid
@@ -32,13 +35,14 @@ function species_sprinkle(grid, p, species_data) {
 	grid.forEach(function(item) {
         var is_specie = Math.random();
         if (is_specie <= p) {
-            item.setupEspece(getRandomInt(0, species_data.length), species_data);
+            item.setupEspece(getRandomInt(0, species_data.length + 1), species_data);
         }
     })
+	return grid;
 }
 
 // Start/restart function
-function species_start(species_data, grid) {
+function species_start(species_data, ratios) {
     //initDatabase();
 
     /*
@@ -80,21 +84,20 @@ function species_start(species_data, grid) {
 	//especesDataCached = especesData.slice();
 	
 	setupWorker = new Worker("./scripts/species_worker.js");
-	setupWorker.postMessage([this.canvas_width, this.canvas_height, this.cell_width, this.cell_height]);
+	setupWorker.postMessage(ratios);
 	
-	setupWorker.onmessage = function(event) {
+	setupWorker.onmessage = (event) => {
 
 		setupWorker.terminate();
 		setupWorker = undefined;
 		
-		grid = event.data
+		this.grid = event.data
 		
-	    grid.forEach(function(item){
+	    this.grid.forEach(function(item) {
 			reattachMethods(item, Species_Cell);
 		})
 		
-		species_sprinkle(grid, 0.01, species_data);
-        console.log(grid);
+		this.grid = species_sprinkle(this.grid, 0.01, species_data);
 		//generation = 0;
 		//totalRessources = listeCases.length;
 		//restartGraph();
@@ -105,4 +108,27 @@ function species_start(species_data, grid) {
     setupWorker.onerror = function(err) {
         console.log("error " + err.message);
     }
+}
+
+// Drawing function
+function species_draw(grid, ratios, ctx) {
+	grid.forEach(function(item){
+		ctx.fillStyle = item.couleur;
+		ctx.fillRect(item.x * ratios[2], item.y * ratios[3], ratios[2], ratios[3]);
+	})
+	
+	// document.getElementById("compteur").innerHTML = "Nombre d'individus: " + totalIndividus + "</br> Nombre de ressources: " + totalRessources;
+	
+	/*
+	var passGraph = []
+	for (let i = 0; i < especePopulation.length; i += 1){
+		passGraph.push([(especePopulation[i]/totalRessources)*(graphHauteur - (graphScaleOffset*2)), especesDataCached[i][2]]);
+	}
+	
+	if (especePopulation.length > 1){
+		passGraph.push([(totalIndividus/totalRessources)*(graphHauteur - (graphScaleOffset*2)), 'pink']);
+	}
+	
+	graphCalc(passGraph, generation);
+	*/
 }
