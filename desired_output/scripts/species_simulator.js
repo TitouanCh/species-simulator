@@ -14,8 +14,12 @@ species_simulation.canvas_height = 400;
 species_simulation.canvas_width = 400;
 species_simulation.cell_height = 10;
 species_simulation.cell_width = 10;
+species_simulation.predation = 2;
+species_simulation.ageMax = true;
 species_simulation.ratios = [species_simulation.canvas_width, species_simulation.canvas_height, species_simulation.cell_width, species_simulation.cell_height];
 species_simulation.start = species_start;
+species_simulation.next_basis = [];
+species_simulation.step = species_step;
 
 startSimulation(species_simulation);
 
@@ -26,6 +30,7 @@ function species_ready() {
 function species_main() {
 	setTimeout(() => {
 		species_draw(this.grid, this.ratios, this.board_ctx);
+		this.step()
 		this.main();
 	}, 1000/this.FPS);
 }
@@ -59,27 +64,29 @@ function species_start(species_data, ratios) {
 		FPS = parseInt(document.getElementById("FPS").value);
 		
 		var idx = 1;
-		especesData.forEach(function(espece) {
-			espece[2] = document.getElementById("couleurEspece" + idx).value;
-			espece[0] = parseInt(document.getElementById("tauxReproductionEspece" + idx).value);
-			espece[3] = parseInt(document.getElementById("tauxPredationEspece" + idx).value);
-			espece[1] = parseInt(document.getElementById("ageMaxEspece" + idx).value);
-			
-			espece[4] = []
-			
-			for (a = 1; a <= especesData.length; a++) {
-				if (document.getElementById('regimeEspece' + idx + 'for' + a).checked){
-					espece[4].push(true)
-				} else {
-					espece[4].push(false)
-				}
+	*/
+	this.next_basis = [];
+	species_data.forEach((espece) => {
+		/*
+		espece[2] = document.getElementById("couleurEspece" + idx).value;
+		espece[0] = parseInt(document.getElementById("tauxReproductionEspece" + idx).value);
+		espece[3] = parseInt(document.getElementById("tauxPredationEspece" + idx).value);
+		espece[1] = parseInt(document.getElementById("ageMaxEspece" + idx).value);
+		
+		espece[4] = []
+		
+		for (a = 1; a <= especesData.length; a++) {
+			if (document.getElementById('regimeEspece' + idx + 'for' + a).checked){
+				espece[4].push(true)
+			} else {
+				espece[4].push(false)
 			}
-			
-			idx += 1;
-			
-			nextEspeceBase.push(0)
-		})
-    */
+		}
+		
+		idx += 1;
+		*/
+		this.next_basis.push(0)
+	})
 	
 	//especesDataCached = especesData.slice();
 	
@@ -99,7 +106,7 @@ function species_start(species_data, ratios) {
 		
 		this.grid = species_sprinkle(this.grid, 0.01, species_data);
 		//generation = 0;
-		//totalRessources = listeCases.length;
+		//totalRessources = this.grid.length;
 		//restartGraph();
 		
 		//document.getElementById('pause').checked = false;
@@ -131,4 +138,98 @@ function species_draw(grid, ratios, ctx) {
 	
 	graphCalc(passGraph, generation);
 	*/
+}
+
+// Steps through simulation
+function species_step() {
+	
+	//totalIndividus = 0;
+	//especePopulation = nextEspeceBase.slice(0);
+
+	this.grid.forEach(item => {
+	
+		item.nextEspece = this.next_basis.slice(0);
+		
+		// Reproduction (seulement sur case vide)
+		if (item.espece == 0) {
+			item.voisins.forEach((voisin) => {
+				var b = getRandomInt(1, 100);
+				if (b <= this.grid[voisin].tauxReproduction) {
+					item.nextEspece[this.grid[voisin].espece - 1] += 1;
+				}
+			})
+		}
+		
+		if (item.espece > 0) {
+			
+			// Sauvegarde de l'espece précédente
+			item.nextEspece[item.espece - 1] += 1;
+			
+			// Prédation
+			if (this.predation) {
+				item.voisins.forEach((voisin) => {
+					// Cannibalisme = NON enfait si :)
+					if (this.grid[voisin].espece > 0 && this.species_data[this.grid[voisin].espece - 1][4][item.espece - 1]) {
+						var b = getRandomInt(1, 100)
+						if (b <= this.grid[voisin].tauxPredation) {
+							item.nextEspece[this.grid[voisin].espece - 1] += this.predation;
+						}
+					}
+				})
+			}
+			
+			if (this.ageMax) {
+				// Viellissement
+				item.age += 1;
+				
+				// Mort de Viellesse
+				if (item.age == item.ageMax){
+					item.nextEspece = [0,0];
+				}
+			}
+		
+			// Comptage Individus
+			//totalIndividus += 1;
+			//especePopulation[item.espece-1] += 1
+		}
+		
+		
+	})
+		
+	// Changement des cases
+	this.grid.forEach((item) => {
+		var nextEspeceIdx = calculNextEspece(item.nextEspece);
+		
+		if (item.espece != nextEspeceIdx + 1) {
+			item.age = 0;
+		}
+		
+		//console.log(this.species_data)
+		item.setupEspece(nextEspeceIdx + 1, this.species_data);
+	})
+}
+
+// Fonction qui check nextEspece
+function calculNextEspece(arr) {
+    var max = arr[0];
+    var maxIndex = 0;
+	
+    for (var i = 1; i < arr.length; i++) {
+		
+		if (arr[i] == max) {
+			maxIndex = -1;
+		}
+	
+        if (arr[i] > max) {
+            maxIndex = i;
+            max = arr[i];
+        }
+		
+    }
+	
+	if (max == 0) {
+		maxIndex = -1;
+	}
+
+    return maxIndex;
 }
