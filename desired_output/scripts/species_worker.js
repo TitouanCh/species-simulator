@@ -8,8 +8,8 @@ onmessage = function(event) {
 
 	var ratios = event.data;
 		
-	for (let i = 0; i < ratios[0]; i += ratios[2]) {
-		for (let j = 0; j < ratios[1]; j += ratios[3]) {
+	for (let i = 0; i < ratios[0] - ratios[2]; i += ratios[2]) {
+		for (let j = 0; j < ratios[1] - ratios[3]; j += ratios[3]) {
 			var a = new Species_Cell(i/ratios[2], j/ratios[3], 0)
 			a.setupEspece(0);
 			grid.push(a);

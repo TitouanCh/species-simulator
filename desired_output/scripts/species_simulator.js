@@ -10,16 +10,21 @@ var species_simulation = new Ssimulation(
 // Specie format: [Reproduction Rate, Max Age, Color, Predation Rate, [Diet]]
 species_simulation.species_data = [ [10, 30, '#7c9ac2', 5, [false, false]], [10, 20, '#293e58', 5, [false, false]] ];
 species_simulation.grid = [];
-species_simulation.canvas_height = 400;
-species_simulation.canvas_width = 400;
+species_simulation.canvas_height = species_simulation.board.height;
+species_simulation.canvas_width = species_simulation.board.width;
 species_simulation.cell_height = 10;
 species_simulation.cell_width = 10;
+species_simulation.grid_height = 0;
+species_simulation.grid_width = 0;
+species_simulation.offset_height = (species_simulation.board.height % species_simulation.cell_height)/2;
+species_simulation.offset_width = (species_simulation.board.width % species_simulation.cell_width)/2;
 species_simulation.predation = 2;
 species_simulation.ageMax = true;
 species_simulation.ratios = [species_simulation.canvas_width, species_simulation.canvas_height, species_simulation.cell_width, species_simulation.cell_height];
 species_simulation.start = species_start;
 species_simulation.next_basis = [];
 species_simulation.step = species_step;
+species_simulation.draw = species_draw;
 
 startSimulation(species_simulation);
 
@@ -29,8 +34,8 @@ function species_ready() {
 
 function species_main() {
 	setTimeout(() => {
-		species_draw(this.grid, this.ratios, this.board_ctx);
-		this.step()
+		this.draw();
+		this.step();
 		this.main();
 	}, 1000/this.FPS);
 }
@@ -98,7 +103,7 @@ function species_start(species_data, ratios) {
 		setupWorker.terminate();
 		setupWorker = undefined;
 		
-		this.grid = event.data
+		this.grid = event.data;
 		
 	    this.grid.forEach(function(item) {
 			reattachMethods(item, Species_Cell);
@@ -109,7 +114,10 @@ function species_start(species_data, ratios) {
 		//totalRessources = this.grid.length;
 		//restartGraph();
 		
-		//document.getElementById('pause').checked = false;
+		//document.getElementById('pause').checked = false;*
+
+		this.grid_height = (this.ratios[1] - (this.offset_height * 2)) / this.ratios[3];
+		this.grid_width = (this.ratios[0] - (this.offset_width * 2)) / this.ratios[2];
 	};
 
     setupWorker.onerror = function(err) {
@@ -118,10 +126,16 @@ function species_start(species_data, ratios) {
 }
 
 // Drawing function
-function species_draw(grid, ratios, ctx) {
-	grid.forEach(function(item){
-		ctx.fillStyle = item.couleur;
-		ctx.fillRect(item.x * ratios[2], item.y * ratios[3], ratios[2], ratios[3]);
+function species_draw() {
+
+	var xoffset = [0, 0];
+
+	xoffset[1] = this.offset_height + 5;
+	xoffset[0] = (this.board.width - (this.grid_width * this.ratios[3]))/2;
+
+	this.grid.forEach((item) => {
+		this.board_ctx.fillStyle = item.couleur;
+		this.board_ctx.fillRect(xoffset[0] + item.x * this.ratios[2], xoffset[1] + item.y * this.ratios[3], this.ratios[2], this.ratios[3]);
 	})
 	
 	// document.getElementById("compteur").innerHTML = "Nombre d'individus: " + totalIndividus + "</br> Nombre de ressources: " + totalRessources;
