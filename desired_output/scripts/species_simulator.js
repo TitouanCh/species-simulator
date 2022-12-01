@@ -25,6 +25,7 @@ species_simulation.start = species_start;
 species_simulation.next_basis = [];
 species_simulation.step = species_step;
 species_simulation.draw = species_draw;
+species_simulation.once = true;
 
 startSimulation(species_simulation);
 
@@ -55,21 +56,29 @@ function species_sprinkle(grid, p, species_data) {
 function species_start(species_data, ratios) {
     //initDatabase();
 
-    /*
-	if (home) {
-		longueurTableau = parseInt(document.getElementById("longueurTableau").value);
-		hauteurTableau = parseInt(document.getElementById("hauteurTableau").value);
+	if (!this.once) {
+		longueurTableau = parseInt(document.getElementById("tableWidth").value);
+		hauteurTableau = parseInt(document.getElementById("tableHeight").value);
 		
-		longueurCase = parseInt(document.getElementById("longueurCase").value);
-		hauteurCase = parseInt(document.getElementById("hauteurCase").value);
+		longueurCase = parseInt(document.getElementById("cellWidth").value);
+		hauteurCase = parseInt(document.getElementById("cellHeight").value);
 		
-		
+		/*
 		probaParsemage = parseInt(document.getElementById("probaParsemage").value);
 		
 		FPS = parseInt(document.getElementById("FPS").value);
 		
 		var idx = 1;
-	*/
+		*/
+	} else {
+		this.once = false;
+		document.getElementById("tableWidth").value = this.canvas_width;
+		document.getElementById("tableHeight").value = this.canvas_height;
+		
+		document.getElementById("cellWidth").value = this.cell_width;
+		document.getElementById("cellHeight").value = this.cell_height;
+	}
+
 	this.next_basis = [];
 	species_data.forEach((espece) => {
 		/*

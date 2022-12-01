@@ -82,12 +82,24 @@ addEventListener("resize", (event) => {resizeTaskBar()});
 </header>
 
 <div>
-<div id='Species Simulator online simulator' class='online_simulator'>
+<div id='Species Simulator online simulator' class='online_simulator' style="text-align: center;">
 <canvas id='Species Simulator simulation' class='simulation_canvas'  width = '900' height='900'>
 </div>
 
-<div id='Species Simulator parameters' class='simulation_parameters'>
+<div id='Species Simulator parameters' class='simulation_parameters' style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px;">
+<div style="font-style: italic;">Parameters --</div><hr style="background-color: black; border: none; height: 1px;">
+<label for="tableWidth">Table width: </label>
+<input type="number" min="0" value="100" id="tableWidth"><br>
+<label for="tableHeight">Table height: </label>
+<input type="number" min="0" value="100" id="tableHeight"><br>
+<label for="cellWidth">Cell width: </label>
+<input type="number" min="0" value="100" id="cellWidth"><br>
+<label for="cellHeight">Cell height: </label>
+<input type="number" min="0" value="100" id="cellHeight"><br><br><hr style="background-color: black; border: none; height: 1px;">
+<label class="hiddenLabel" for="restartSim">Restart Simulation: </label>
+<button id="restartSpeciesSim" onclick="restart();"><object data="arrow_circle.svg" width="32" style="pointer-events: none;"></object></button>
 </div>
+
 <script src='./scripts/utils.js'></script>
 <script src='./scripts/Ssimulation.js'></script>
 <script src='./scripts/Species_Cell.js'></script>
