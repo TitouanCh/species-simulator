@@ -97,7 +97,7 @@ addEventListener("resize", (event) => {resizeTaskBar()});
 <label for="cellHeight">Cell height: </label>
 <input type="number" min="0" value="100" id="cellHeight"><br><br><hr style="background-color: black; border: none; height: 1px;">
 <label class="hiddenLabel" for="restartSim">Restart Simulation: </label>
-<button id="restartSpeciesSim" onclick="restart();"><object data="arrow_circle.svg" width="32" style="pointer-events: none;"></object></button>
+<button id="restartSpeciesSim" onclick="species_simulation.start();"><object data="arrow_circle.svg" width="32" style="pointer-events: none;"></object></button>
 </div>
 
 <script src='./scripts/utils.js'></script>

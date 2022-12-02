@@ -53,15 +53,21 @@ function species_sprinkle(grid, p, species_data) {
 }
 
 // Start/restart function
-function species_start(species_data, ratios) {
+function species_start() {
     //initDatabase();
+	this.grid = [];
 
 	if (!this.once) {
-		longueurTableau = parseInt(document.getElementById("tableWidth").value);
-		hauteurTableau = parseInt(document.getElementById("tableHeight").value);
+		this.canvas_width = parseInt(document.getElementById("tableWidth").value);
+		this.canvas_height = parseInt(document.getElementById("tableHeight").value);
 		
-		longueurCase = parseInt(document.getElementById("cellWidth").value);
-		hauteurCase = parseInt(document.getElementById("cellHeight").value);
+		this.cell_width = parseInt(document.getElementById("cellWidth").value);
+		this.cell_height = parseInt(document.getElementById("cellHeight").value);
+
+		this.ratios = [species_simulation.canvas_width, species_simulation.canvas_height, species_simulation.cell_width, species_simulation.cell_height];
+		species_simulation.board.height = this.canvas_height;
+		species_simulation.board.width = this.canvas_width;
+		console.log(species_simulation.board.width);
 		
 		/*
 		probaParsemage = parseInt(document.getElementById("probaParsemage").value);
@@ -74,13 +80,13 @@ function species_start(species_data, ratios) {
 		this.once = false;
 		document.getElementById("tableWidth").value = this.canvas_width;
 		document.getElementById("tableHeight").value = this.canvas_height;
-		
+				
 		document.getElementById("cellWidth").value = this.cell_width;
 		document.getElementById("cellHeight").value = this.cell_height;
 	}
 
 	this.next_basis = [];
-	species_data.forEach((espece) => {
+	this.species_data.forEach((espece) => {
 		/*
 		espece[2] = document.getElementById("couleurEspece" + idx).value;
 		espece[0] = parseInt(document.getElementById("tauxReproductionEspece" + idx).value);
@@ -105,7 +111,7 @@ function species_start(species_data, ratios) {
 	//especesDataCached = especesData.slice();
 	
 	setupWorker = new Worker("./scripts/species_worker.js");
-	setupWorker.postMessage(ratios);
+	setupWorker.postMessage(this.ratios);
 	
 	setupWorker.onmessage = (event) => {
 
@@ -118,7 +124,7 @@ function species_start(species_data, ratios) {
 			reattachMethods(item, Species_Cell);
 		})
 		
-		this.grid = species_sprinkle(this.grid, 0.01, species_data);
+		this.grid = species_sprinkle(this.grid, 0.01, this.species_data);
 		//generation = 0;
 		//totalRessources = this.grid.length;
 		//restartGraph();
