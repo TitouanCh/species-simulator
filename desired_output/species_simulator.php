@@ -95,9 +95,18 @@ addEventListener("resize", (event) => {resizeTaskBar()});
 <label for="cellWidth">Cell width: </label>
 <input type="number" min="0" value="100" id="cellWidth"><br>
 <label for="cellHeight">Cell height: </label>
-<input type="number" min="0" value="100" id="cellHeight"><br><br><hr style="background-color: black; border: none; height: 1px;">
+<input type="number" min="0" value="100" id="cellHeight"><br>
+<label for="FPS">Generation per second: </label>
+<input type="number" min="0" value="60" id="FPS"><br>
+
+<br>
+<hr style="background-color: black; border: none; height: 1px;">
+
 <label class="hiddenLabel" for="restartSim">Restart Simulation: </label>
 <button id="restartSpeciesSim" onclick="species_simulation.start();"><object data="arrow_circle.svg" width="32" style="pointer-events: none;"></object></button>
+<label class="hiddenLabel" for="pauseSim">Pause: </label>
+<button id="restartSpeciesSim" onclick="species_simulation.pause = !species_simulation.pause; if (species_simulation.pause) {document.getElementById('restartSpeciesSimIcon').data = 'play.svg';} else {document.getElementById('restartSpeciesSimIcon').data = 'pause.svg';}"><object id="restartSpeciesSimIcon" data="pause.svg" width="32" style="pointer-events: none;"></object></button>
+
 </div>
 
 <script src='./scripts/utils.js'></script>

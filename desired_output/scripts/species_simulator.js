@@ -35,8 +35,10 @@ function species_ready() {
 
 function species_main() {
 	setTimeout(() => {
-		this.draw();
-		this.step();
+		if (!this.pause) {
+			this.draw();
+			this.step();
+		}
 		this.main();
 	}, 1000/this.FPS);
 }
@@ -69,13 +71,11 @@ function species_start() {
 		species_simulation.board.width = this.canvas_width;
 		console.log(species_simulation.board.width);
 		
-		/*
-		probaParsemage = parseInt(document.getElementById("probaParsemage").value);
 		
-		FPS = parseInt(document.getElementById("FPS").value);
+		//probaParsemage = parseInt(document.getElementById("probaParsemage").value);
 		
-		var idx = 1;
-		*/
+		this.FPS = parseInt(document.getElementById("FPS").value);
+
 	} else {
 		this.once = false;
 		document.getElementById("tableWidth").value = this.canvas_width;
@@ -86,6 +86,7 @@ function species_start() {
 	}
 
 	this.next_basis = [];
+	this.pause = false;
 	this.species_data.forEach((espece) => {
 		/*
 		espece[2] = document.getElementById("couleurEspece" + idx).value;
