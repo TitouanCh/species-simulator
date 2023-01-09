@@ -99,6 +99,12 @@ addEventListener("resize", (event) => {resizeTaskBar()});
 <label for="FPS">Generation per second: </label>
 <input type="number" min="0" value="60" id="FPS"><br>
 
+<hr style="background-color: black; border: none; height: 1px;">
+
+<input id="addSpecies" type="button" value="Add a new species" onclick="species_simulation.add_species();">
+<input id="deleteSpecies" type="button" value="Delete species" onclick="species_simulation.delete_species();">
+<div id="speciesPanel"></div>
+
 <br>
 <hr style="background-color: black; border: none; height: 1px;">
 

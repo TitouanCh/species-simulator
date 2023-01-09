@@ -9,6 +9,7 @@ var species_simulation = new Ssimulation(
 
 // Specie format: [Reproduction Rate, Max Age, Color, Predation Rate, [Diet]]
 species_simulation.species_data = [ [10, 30, '#7c9ac2', 5, [false, false]], [10, 20, '#293e58', 5, [false, false]] ];
+species_simulation.species_data_cached = species_simulation.species_data.slice();
 species_simulation.grid = [];
 species_simulation.canvas_height = species_simulation.board.height;
 species_simulation.canvas_width = species_simulation.board.width;
@@ -26,11 +27,14 @@ species_simulation.next_basis = [];
 species_simulation.step = species_step;
 species_simulation.draw = species_draw;
 species_simulation.once = true;
+species_simulation.add_species = addSpecies;
+species_simulation.delete_species = deleteSpecies;
+species_simulation.show_species = showSpecies;
 
 startSimulation(species_simulation);
 
 function species_ready() {
-    this.start(this.species_data, this.ratios);
+    this.start();
 }
 
 function species_main() {
@@ -69,47 +73,49 @@ function species_start() {
 		this.ratios = [species_simulation.canvas_width, species_simulation.canvas_height, species_simulation.cell_width, species_simulation.cell_height];
 		species_simulation.board.height = this.canvas_height;
 		species_simulation.board.width = this.canvas_width;
-		console.log(species_simulation.board.width);
+		// console.log(species_simulation.board.width);
 		
 		
-		//probaParsemage = parseInt(document.getElementById("probaParsemage").value);
+		// probaParsemage = parseInt(document.getElementById("probaParsemage").value);
 		
 		this.FPS = parseInt(document.getElementById("FPS").value);
 
 	} else {
-		this.once = false;
 		document.getElementById("tableWidth").value = this.canvas_width;
 		document.getElementById("tableHeight").value = this.canvas_height;
 				
 		document.getElementById("cellWidth").value = this.cell_width;
 		document.getElementById("cellHeight").value = this.cell_height;
+
+		this.show_species()
 	}
 
 	this.next_basis = [];
-	this.pause = false;
-	this.species_data.forEach((espece) => {
-		/*
-		espece[2] = document.getElementById("couleurEspece" + idx).value;
-		espece[0] = parseInt(document.getElementById("tauxReproductionEspece" + idx).value);
-		espece[3] = parseInt(document.getElementById("tauxPredationEspece" + idx).value);
-		espece[1] = parseInt(document.getElementById("ageMaxEspece" + idx).value);
-		
-		espece[4] = []
-		
-		for (a = 1; a <= especesData.length; a++) {
-			if (document.getElementById('regimeEspece' + idx + 'for' + a).checked){
-				espece[4].push(true)
-			} else {
-				espece[4].push(false)
+	var idx = 1;
+	this.species_data.forEach((species) => {
+		if (!this.once) {
+			console.log(document.getElementById("couleurEspece" + idx))
+			species[2] = document.getElementById("couleurEspece" + idx).value;
+			species[0] = parseInt(document.getElementById("tauxReproductionEspece" + idx).value);
+			species[3] = parseInt(document.getElementById("tauxPredationEspece" + idx).value);
+			species[1] = parseInt(document.getElementById("ageMaxEspece" + idx).value);
+			
+			species[4] = []
+			
+			for (a = 1; a <= this.species_data.length; a++) {
+				if (document.getElementById('regimeEspece' + idx + 'for' + a).checked){
+					species[4].push(true)
+				} else {
+					species[4].push(false)
+				}
 			}
+			
+			idx += 1;
 		}
-		
-		idx += 1;
-		*/
 		this.next_basis.push(0)
 	})
 	
-	//especesDataCached = especesData.slice();
+	this.species_data_cached = this.species_data.slice();
 	
 	setupWorker = new Worker("./scripts/species_worker.js");
 	setupWorker.postMessage(this.ratios);
@@ -125,7 +131,7 @@ function species_start() {
 			reattachMethods(item, Species_Cell);
 		})
 		
-		this.grid = species_sprinkle(this.grid, 0.01, this.species_data);
+		this.grid = species_sprinkle(this.grid, 0.01, this.species_data_cached);
 		//generation = 0;
 		//totalRessources = this.grid.length;
 		//restartGraph();
@@ -139,6 +145,9 @@ function species_start() {
     setupWorker.onerror = function(err) {
         console.log("error " + err.message);
     }
+
+	this.pause = false;
+	this.once = false;
 }
 
 // Drawing function
@@ -199,7 +208,7 @@ function species_step() {
 			if (this.predation) {
 				item.voisins.forEach((voisin) => {
 					// Cannibalisme = NON enfait si :)
-					if (this.grid[voisin].espece > 0 && this.species_data[this.grid[voisin].espece - 1][4][item.espece - 1]) {
+					if (this.grid[voisin].espece > 0 && this.species_data_cached[this.grid[voisin].espece - 1][4][item.espece - 1]) {
 						var b = getRandomInt(1, 100)
 						if (b <= this.grid[voisin].tauxPredation) {
 							item.nextEspece[this.grid[voisin].espece - 1] += this.predation;
@@ -234,8 +243,7 @@ function species_step() {
 			item.age = 0;
 		}
 		
-		//console.log(this.species_data)
-		item.setupEspece(nextEspeceIdx + 1, this.species_data);
+		item.setupEspece(nextEspeceIdx + 1, this.species_data_cached);
 	})
 }
 
@@ -262,4 +270,66 @@ function calculNextEspece(arr) {
 	}
 
     return maxIndex;
+}
+
+// Displaying functions ---
+
+// Add species to display
+function addSpecies() {
+	var predationMatrix = [false]
+	
+	for (idx = 0; idx < this.species_data.length; idx++) {
+		this.species_data[idx][4].push(false)
+		predationMatrix.push(false)
+	}
+	
+	this.species_data.push([10, 30, '#3b6584', 5, predationMatrix]);
+	this.show_species();
+}
+
+// Delete species from display
+function deleteSpecies() {
+	this.species_data.pop();
+	this.show_species();
+}
+
+// Show the different species
+function showSpecies() {
+	document.getElementById("speciesPanel").innerHTML = ""
+	var idx = 1
+	this.species_data.forEach((ispecies) => {
+		document.getElementById("speciesPanel").innerHTML += '</br>'
+		document.getElementById("speciesPanel").innerHTML += '<div style="font-style: italic;">Specie ' + idx + ' --</div style="font-style: italic;">';
+		
+		document.getElementById("speciesPanel").innerHTML += 'Color: ' + '<input type="color" value="' + ispecies[2] + '" id="couleurEspece' + idx + '">';
+		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="couleurEspece' + idx + '">Sélectionner la couleur de l\'espèce ' + idx + '.</label>';
+		
+		document.getElementById("speciesPanel").innerHTML += '</br>Probability of Reproduction: ' + '<input type="number" min="1" max="100" value="' + ispecies[0] + '" id="tauxReproductionEspece' + idx + '">%';
+		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="tauxReproductionEspece' + idx + '">Choose a reproduction percentage for the specie ' + idx + '.</label>';
+		
+		document.getElementById("speciesPanel").innerHTML += '</br>Probability of Predation: ' + '<input type="number" min="1" max="100" value="' + ispecies[3] + '" id="tauxPredationEspece' + idx + '">%';
+		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="tauxPredationEspece' + idx + '">Choose a predation percentage for the specie ' + idx + '.</label>';
+		
+		document.getElementById("speciesPanel").innerHTML += '</br>Preys on: '
+		
+		var idx2 = 1
+		this.species_data.forEach((jspecies) => {
+			document.getElementById("speciesPanel").innerHTML += '<label for="regimeEspece' + idx + 'for' + idx2 + '" style ="visibility: visible; display: inline;">Specie ' + idx2 + ' </label><input id="regimeEspece' + idx + 'for' + idx2 + '" type="checkbox"/>'
+			if (idx2 != this.species_data.length){
+				document.getElementById("speciesPanel").innerHTML += ', '
+			}
+			
+			document.getElementById("speciesPanel").innerHTML += '';
+			
+			idx2 += 1
+		})
+		
+		document.getElementById("speciesPanel").innerHTML += '</br>Life expectancy: ' + '<input type="number" min="1" max="500" value="' + ispecies[1] + '" id="ageMaxEspece' + idx + '">';
+		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="ageMaxEspece' + idx + '">Maximum age for specie ' + idx + '.</label>';
+		document.getElementById("speciesPanel").innerHTML += '</br>'
+		
+		idx += 1;
+	}
+	
+	)
 }
