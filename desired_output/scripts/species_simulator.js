@@ -30,6 +30,7 @@ species_simulation.once = true;
 species_simulation.add_species = addSpecies;
 species_simulation.delete_species = deleteSpecies;
 species_simulation.show_species = showSpecies;
+species_simulation.resize = species_resize;
 
 startSimulation(species_simulation);
 
@@ -295,41 +296,60 @@ function deleteSpecies() {
 
 // Show the different species
 function showSpecies() {
-	document.getElementById("speciesPanel").innerHTML = ""
+	// Duplicated to window resize
+	if (this.board.parentElement.clientWidth > 705) {
+		document.getElementById("speciesPanel").style.display = "grid";
+	} else {
+		document.getElementById("speciesPanel").style.display = "auto";
+	}
+
 	var idx = 1
+	var string = '';
 	this.species_data.forEach((ispecies) => {
-		document.getElementById("speciesPanel").innerHTML += '</br>'
-		document.getElementById("speciesPanel").innerHTML += '<div style="font-style: italic;">Specie ' + idx + ' --</div style="font-style: italic;">';
+		string += '<div style="margin-top: 29px; grid-column: ' + (idx % 3) + '; grid-row: ' + (Math.floor((idx-1) / 3) + 1) + ';">'
+		string += '<div style="font-style: italic;">Specie ' + idx + ' --</div style="font-style: italic;">';
 		
-		document.getElementById("speciesPanel").innerHTML += 'Color: ' + '<input type="color" value="' + ispecies[2] + '" id="couleurEspece' + idx + '">';
-		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="couleurEspece' + idx + '">Sélectionner la couleur de l\'espèce ' + idx + '.</label>';
+		string += 'Color: ' + '<input type="color" value="' + ispecies[2] + '" id="couleurEspece' + idx + '">';
+		string += '<label class ="hiddenLabel" for="couleurEspece' + idx + '">Sélectionner la couleur de l\'espèce ' + idx + '.</label>';
 		
-		document.getElementById("speciesPanel").innerHTML += '</br>Probability of Reproduction: ' + '<input type="number" min="1" max="100" value="' + ispecies[0] + '" id="tauxReproductionEspece' + idx + '">%';
-		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="tauxReproductionEspece' + idx + '">Choose a reproduction percentage for the specie ' + idx + '.</label>';
+		string += '</br>Probability of Reproduction: ' + '<input type="number" min="1" max="100" value="' + ispecies[0] + '" id="tauxReproductionEspece' + idx + '">%';
+		string += '<label class ="hiddenLabel" for="tauxReproductionEspece' + idx + '">Choose a reproduction percentage for the specie ' + idx + '.</label>';
 		
-		document.getElementById("speciesPanel").innerHTML += '</br>Probability of Predation: ' + '<input type="number" min="1" max="100" value="' + ispecies[3] + '" id="tauxPredationEspece' + idx + '">%';
-		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="tauxPredationEspece' + idx + '">Choose a predation percentage for the specie ' + idx + '.</label>';
+		string += '</br>Probability of Predation: ' + '<input type="number" min="1" max="100" value="' + ispecies[3] + '" id="tauxPredationEspece' + idx + '">%';
+		string += '<label class ="hiddenLabel" for="tauxPredationEspece' + idx + '">Choose a predation percentage for the specie ' + idx + '.</label>';
 		
-		document.getElementById("speciesPanel").innerHTML += '</br>Preys on: '
+		string += '</br>Preys on: '
 		
 		var idx2 = 1
 		this.species_data.forEach((jspecies) => {
-			document.getElementById("speciesPanel").innerHTML += '<label for="regimeEspece' + idx + 'for' + idx2 + '" style ="visibility: visible; display: inline;">Specie ' + idx2 + ' </label><input id="regimeEspece' + idx + 'for' + idx2 + '" type="checkbox"/>'
+			string += '<label for="regimeEspece' + idx + 'for' + idx2 + '" style ="visibility: visible; display: inline;">Specie ' + idx2 + ' </label><input id="regimeEspece' + idx + 'for' + idx2 + '" type="checkbox"/>'
 			if (idx2 != this.species_data.length){
-				document.getElementById("speciesPanel").innerHTML += ', '
+				string += ', '
 			}
 			
-			document.getElementById("speciesPanel").innerHTML += '';
+			string += '';
 			
 			idx2 += 1
 		})
 		
-		document.getElementById("speciesPanel").innerHTML += '</br>Life expectancy: ' + '<input type="number" min="1" max="500" value="' + ispecies[1] + '" id="ageMaxEspece' + idx + '">';
-		document.getElementById("speciesPanel").innerHTML += '<label class ="hiddenLabel" for="ageMaxEspece' + idx + '">Maximum age for specie ' + idx + '.</label>';
-		document.getElementById("speciesPanel").innerHTML += '</br>'
+		string += '</br>Life expectancy: ' + '<input type="number" min="1" max="500" value="' + ispecies[1] + '" id="ageMaxEspece' + idx + '">';
+		string += '<label class ="hiddenLabel" for="ageMaxEspece' + idx + '">Maximum age for specie ' + idx + '.</label>';
+		string += '</div>'
 		
 		idx += 1;
+	})
+
+	document.getElementById("speciesPanel").innerHTML = string;
+}
+
+function species_resize() {
+	this.board.width = this.board.parentElement.clientWidth;
+	this.board_ctx.fillStyle = "white";
+	this.board_ctx.fillRect(0, 0, this.board.width, this.board.height);
+
+	if (this.board.parentElement.clientWidth > 705) {
+		document.getElementById("speciesPanel").style.display = "grid";
+	} else {
+		document.getElementById("speciesPanel").style.display = "block";
 	}
-	
-	)
 }
