@@ -6,6 +6,13 @@ test_data = {
         "scripts" : ["script1", "script2", "script3"]
         }
 
+def read_html(path, filename):
+    file = open(path + "/" + filename, 'r')
+    html = []
+    for line in file:
+        html.append(line.replace("\n", ""))
+    return html
+
 def write_arr(f, arr):
     for line in arr:
         f.write(line + "\n")
@@ -18,6 +25,7 @@ def generate_head(data):
             "<title>" + data["title"] + "</title>",
             "<link rel='stylesheet' href='style.css'>",
             "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>",
+            "<meta name='viewport' content='width=device-width, initial-scale=1'>",
             "</head>"
             ]
 
@@ -32,9 +40,12 @@ def generate_titlebar(data):
             ]
     return arr
 
+def generate_navbar():
+    return read_html("html", "navbar.html")
+
 def generate_simulationcanvas(data):
     arr = [
-            "<div id='" + data["title"] + " online simulator' class='online_simulator'>",
+            "<div id='" + data["title"] + " online simulator' class='online_simulator' style='text-align: center;'>",
             "<canvas id='" + data["title"] + " simulation' class='simulation_canvas'  width = '900' height='1525'>",
             "</div>"
             ]
@@ -46,6 +57,8 @@ def generate_simulationparam(data):
             "<div id='" + data["title"] + " parameters' class='simulation_parameters'>",
             "</div>"
             ]
+    if data["parameters"][0].startswith("CUSTOM"):
+        arr = read_html("html/" + data["pagetitle"], data["parameters"][0].replace("CUSTOM ", ""))
     return arr
 
 # TODO : refurbish the way long_desc works
@@ -58,36 +71,37 @@ def generate_desc(data):
     return arr
 
 def generate_imports(data):
-    arr = [
-            "<script src='./scripts/simulation_resize.js'></script>"
-            ]
+    arr = []
+    for script_import in data["scripts"]:
+        arr.append("<script src=" + script_import.replace("$PAGETITLE", data["pagetitle"]) + "></script>")
     return arr
 
 def generate_body(data):
-    arr1 = [
-            "<body>",
-            "<main id = '" + data["title"] + "'>",
-            ]
+    arr1 = ["<body>"]
     
-    arr2 = generate_titlebar(data)
+    arr2 = generate_navbar()
 
-    arr3 = generate_simulationcanvas(data)
+    arr3 = ["<main id = '" + data["title"] + "'>", "<div class='article'>"]
     
-    arr4 = generate_simulationparam(data)
+    arr4 = generate_titlebar(data)
 
-    arr5 = generate_desc(data)
+    arr5 = generate_simulationcanvas(data)
+    
+    arr6 = generate_simulationparam(data)
 
-    arr6 = generate_imports(data)
+    arr7 = generate_desc(data)
 
-    arr7 = [
+    arr8 = generate_imports(data)
+
+    arr9 = [
+            "</div>",
             "</body>",
             "</html>"
             ]
 
-    return arr1 + arr2 + arr3 + arr4 + arr5 + arr6 + arr7
+    return arr1 + arr2 + arr3 + arr4 + arr5 + arr6 + arr7 + arr8 + arr9
 
 def generate_page(path, filename, data):
     with open(path + filename + ".php", 'w') as f:
         write_arr(f, generate_head(data))
         write_arr(f, generate_body(data))
-

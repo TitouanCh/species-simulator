@@ -19,13 +19,14 @@ js
 ;
 
 SCRIPTS
-/species-simulator/case.js
-/species-simulator/exportCSV.js
-/species-simulator/graphEN.js
-/species-simulator/simulationEN.js
+./scripts/utils.js
+./scripts/Ssimulation.js
+./scripts/$PAGETITLE/Species_Cell.js
+./scripts/$PAGETITLE/species_simulator.js
 ;
 
 PARAMETERS
+CUSTOM parameters.html
 COUNTER individual_number "Number of individuals: "
 COUNTER ressource_number "Number of ressources: "
 --

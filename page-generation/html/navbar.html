@@ -1,0 +1,62 @@
+<header style="position: sticky; top: 0; width: 100%">
+    <ul style="background: linear-gradient(0.25turn, #333 35%, #000);">
+    <li><a href="/en/index.php" style="font-weight: bold;">LOGO -- Species-Simulator.com</a></li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Cellular Automata</a>
+        <div class="dropdown-content">
+            <a href="/en/cellular-automata/">Understanding Cellular Automata</a>
+            <a href="/en/cellular-automata/game-of-life.php">John Conway's Game of Life</a>
+            <!-- <a href="/en/cellular-automata/elementary-cellular-automata.php">Elementary Cellular Automata</a> -->
+            <a href="/en/cellular-automata/species-simulator.php">Species Simulator</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Other Automata</a>
+        <div class="dropdown-content">
+            <a href="/en/other-cellular-automata/particle-life.php">Particle Life</a>
+        </div>
+    </li><li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Differential Equations</a>
+        <div class="dropdown-content">
+            <a href="/en/differential-equations/">Basic Differential Equations</a>
+            <a href="/en/differential-equations/lotka-volterra.php">Lotka-Volterra</a>
+        </div>
+    <!-- <li><a href="/en/case-studies">Case Study</a></li> -->
+    </li><li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Macroevolution</a>
+        <div class="dropdown-content">
+            <a href="/en/macroevolution/newick-tree-parser.php">Newick Tree Parser</a>
+            <a href="/en/macroevolution/tree-fossil-generator.php">Tree and Fossil Data Generator</a>
+        </div>
+    </li>
+    
+    <li class="phone-menu">
+        <div class="phone-button" width="16" style="position: absolute; top: 16px; right: 16px;">
+          <object data="menu.svg" width="16" style="pointer-events: none; filter: invert(100%);"></object>
+        </div>
+    </li>
+    </ul>
+    
+    <script>
+    function resizeTaskBar() {
+        var phone = window.innerWidth < 1100;
+        var phone_menu = document.getElementsByClassName("phone-menu")[0];
+        var desktop_menu = document.getElementsByClassName("dropdown");
+        if (phone) {
+            phone_menu.style.display = "initial";
+            for (let i = 0; i < desktop_menu.length; i++) {
+                desktop_menu[i].style.display = "none";
+            }
+        }
+        else {
+            phone_menu.style.display = "none";
+            for (let i = 0; i < desktop_menu.length; i++) {
+                desktop_menu[i].style.display = "initial";
+            }
+        }
+    }
+    
+    resizeTaskBar();
+    addEventListener("resize", (event) => {resizeTaskBar()});
+    </script>
+</header>

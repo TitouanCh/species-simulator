@@ -1,0 +1,31 @@
+<div id='Species Simulator parameters' class='simulation_parameters' style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px;">
+
+<label class="hiddenLabel" for="restartSim">Restart Simulation: </label>
+<button id="restartSpeciesSim" onclick="species_simulation.start();"><object data="arrow_circle.svg" width="32" style="pointer-events: none;"></object></button>
+<label class="hiddenLabel" for="pauseSim">Pause: </label>
+<button id="restartSpeciesSim" onclick="species_simulation.pause = !species_simulation.pause; if (species_simulation.pause) {document.getElementById('restartSpeciesSimIcon').data = 'play.svg';} else {document.getElementById('restartSpeciesSimIcon').data = 'pause.svg';}"><object id="restartSpeciesSimIcon" data="pause.svg" width="32" style="pointer-events: none;"></object></button>
+
+<hr style="background-color: black; border: none; height: 1px;">
+
+<div style="margin-top: 25px; margin-bottom: 35px">
+<div style="font-style: italic; margin-top: 10px; margin-bottom: 10px">Parameters --</div>
+<label for="tableWidth">Table width: </label>
+<input type="number" min="0" value="100" id="tableWidth"><br>
+<label for="tableHeight">Table height: </label>
+<input type="number" min="0" value="100" id="tableHeight"><br>
+<label for="cellWidth">Cell width: </label>
+<input type="number" min="0" value="100" id="cellWidth"><br>
+<label for="cellHeight">Cell height: </label>
+<input type="number" min="0" value="100" id="cellHeight"><br>
+<label for="FPS">Generation per second: </label>
+<input type="number" min="0" value="60" id="FPS"><br>
+</div>
+
+<hr style="background-color: black; border: none; height: 1px;">
+
+<input id="addSpecies" type="button" value="Add a new species" onclick="species_simulation.add_species();">
+<input id="deleteSpecies" type="button" value="Delete species" onclick="species_simulation.delete_species();">
+<div id="speciesPanel" style="gap: 4px;"></div>
+
+<br>
+</div>
