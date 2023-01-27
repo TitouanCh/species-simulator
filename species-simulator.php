@@ -114,8 +114,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus sod
 </div>
 <script src=./scripts/utils.js></script>
 <script src=./scripts/Ssimulation.js></script>
-<script src=./scripts/species_simulator/Species_Cell.js></script>
-<script src=./scripts/species_simulator/species_simulator.js></script>
+<script src=./scripts/species-simulator/Species_Cell.js></script>
+<script src=./scripts/species-simulator/species_simulator.js></script>
 </div>
 </body>
 </html>

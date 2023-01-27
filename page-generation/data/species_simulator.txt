@@ -3,7 +3,7 @@ Species Simulator
 ;
 
 PAGETITLE
-species_simulator
+species-simulator
 ;
 
 SHORT_DESC

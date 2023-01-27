@@ -91,6 +91,9 @@ def generate_body(data):
 
     arr7 = generate_desc(data)
 
+    if (data["type"] == "gl"):
+        arr7 += read_html("html/" + data["pagetitle"], "shader.html")
+
     arr8 = generate_imports(data)
 
     arr9 = [
