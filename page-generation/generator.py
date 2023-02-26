@@ -44,6 +44,7 @@ def generate_navbar():
     return read_html("html", "navbar.html")
 
 def generate_simulationcanvas(data):
+    if data["type"] == "article": return []
     arr = [
             "<div id='" + data["title"] + " online simulator' class='online_simulator' style='text-align: center;'>",
             "<canvas id='" + data["title"] + " simulation' class='simulation_canvas'  width = '900' height='1525'>",
@@ -51,8 +52,8 @@ def generate_simulationcanvas(data):
             ]
     return arr
 
-# TODO : make this actually do something :)
 def generate_simulationparam(data):
+    if data["type"] == "article": return []
     arr = [
             "<div id='" + data["title"] + " parameters' class='simulation_parameters'>",
             "</div>"
@@ -68,6 +69,8 @@ def generate_desc(data):
             data["long_desc"][0],
             "</div>"
             ]
+    if data["long_desc"][0].startswith("CUSTOM"):
+        arr = read_html("html/" + data["pagetitle"], data["long_desc"][0].replace("CUSTOM ", ""))
     return arr
 
 def generate_imports(data):
@@ -98,6 +101,7 @@ def generate_body(data):
 
     arr9 = [
             "</div>",
+            "</main>",
             "</body>",
             "</html>"
             ]

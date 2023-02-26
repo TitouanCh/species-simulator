@@ -1,0 +1,22 @@
+TITLE
+Understanding Cellular Automatas
+;
+
+PAGETITLE
+understanding-cellular-automata
+;
+
+SHORT_DESC
+Usually represented in the form of a grid with flickering lights, cellular automata evolve over time using habitually very simple rules. Yet, they can somehow produce extremely complex behaviors...
+;
+
+LONG_DESC
+CUSTOM article.html
+;
+
+TYPE
+article
+;
+
+SCRIPTS
+;

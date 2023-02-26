@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Species Simulator</title>
+<title>Particle Life</title>
 <link rel='stylesheet' href='style.css'>
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -69,53 +69,68 @@
     addEventListener("resize", (event) => {resizeTaskBar()});
     </script>
 </header>
-<main id = 'Species Simulator'>
+<main id = 'Particle Life'>
 <div class='article'>
-<div id='Species Simulator' class='simulation_title'>
-<h1>Species Simulator</h1>
-<h2>Species Simulator - Species-Simulator.com</h2>
+<div id='Particle Life' class='simulation_title'>
+<h1>Particle Life</h1>
+<h2>Particle Life - Species-Simulator.com</h2>
 </div>
-<div id='Species Simulator online simulator' class='online_simulator' style='text-align: center;'>
-<canvas id='Species Simulator simulation' class='simulation_canvas'  width = '900' height='1525'>
+<div id='Particle Life online simulator' class='online_simulator' style='text-align: center;'>
+<canvas id='Particle Life simulation' class='simulation_canvas'  width = '900' height='1525'>
 </div>
 <div id='Species Simulator parameters' class='simulation_parameters' style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px;">
 
-<label class="hiddenLabel" for="restartSim">Restart Simulation: </label>
-<button id="restartSpeciesSim" onclick="species_simulation.start();"><object data="arrow_circle.svg" width="32" style="pointer-events: none;"></object></button>
-<label class="hiddenLabel" for="pauseSim">Pause: </label>
-<button id="restartSpeciesSim" onclick="species_simulation.pause = !species_simulation.pause; if (species_simulation.pause) {document.getElementById('restartSpeciesSimIcon').data = 'play.svg';} else {document.getElementById('restartSpeciesSimIcon').data = 'pause.svg';}"><object id="restartSpeciesSimIcon" data="pause.svg" width="32" style="pointer-events: none;"></object></button>
+<label for="enviroWidth">Enviro Width :</label>
+<input type="number" id="enviroWidth" name="enviroWidth" value="1300" min="10" max="10000">
+ || 
+<label for="enviroHeight">Enviro Height :</label>
+<input type="number" id="enviroHeight" name="enviroHeight" value="800" min="10" max="10000">
 
-<hr style="background-color: black; border: none; height: 1px;">
+<script id="simpleSizer">
+var sizerWidth = document.getElementById('content').clientWidth;
+document.getElementById("enviroWidth").value = sizerWidth/1.5;
+</script>
 
-<div style="margin-top: 25px; margin-bottom: 35px">
-<div style="font-style: italic; margin-top: 10px; margin-bottom: 10px">Parameters --</div>
-<label for="tableWidth">Table width: </label>
-<input type="number" min="0" value="100" id="tableWidth"><br>
-<label for="tableHeight">Table height: </label>
-<input type="number" min="0" value="100" id="tableHeight"><br>
-<label for="cellWidth">Cell width: </label>
-<input type="number" min="0" value="100" id="cellWidth"><br>
-<label for="cellHeight">Cell height: </label>
-<input type="number" min="0" value="100" id="cellHeight"><br>
-<label for="FPS">Generation per second: </label>
-<input type="number" min="0" value="60" id="FPS"><br>
+</br>
+<label for="pause">Pause : </label>
+<input id="pause" type="checkbox"/>
+
+</br>
+
+<button type="button" onclick="restart();">Restart</button>
+
+</br>
+
+<label for="fpsLimit">Image per second limit :</label>
+<input id="fpsLimit" type="number" name="fpsLimit" value="120" min="1" max="2000">
+
+</br>
+
+<label for="nbEspece">Number of different species :</label>
+<input type="number" id="nbEspece" name="nbEspece" value="6" min="1" max="8">
+
+</br>
+
+<label for="nbIndividus">Number of individuals :</label>
+<input type="number" id="nbIndividus" name="nbIndividus" value="200" min="1" max="1000">
+
+</br>
+
+<label for="G">G :</label>
+<input type="number" id="G" name="G" value="0.0981" min="0" max="10">
+
+||
+
+<label for="drag">1/Friction :</label>
+<input type="number" id="drag" name="drag" value="0.98" min="0" max="1">
+
 </div>
-
-<hr style="background-color: black; border: none; height: 1px;">
-
-<input id="addSpecies" type="button" value="Add a new species" onclick="species_simulation.add_species();">
-<input id="deleteSpecies" type="button" value="Delete species" onclick="species_simulation.delete_species();">
-<div id="speciesPanel" style="gap: 4px;"></div>
-
-<br>
-</div>
-<div id='Species Simulator' description class='simulation_description'>
+<div id='Particle Life' description class='simulation_description'>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus sodales, pulvinar velit sit amet, auctor est. Aenean porttitor ipsum ut neque pretium interdum. Maecenas facilisis quis nunc nec commodo. In hac habitasse platea dictumst. Curabitur libero libero, cursus sit amet purus eget, tempus vulputate metus. In sem augue, faucibus vel hendrerit a, gravida vel enim. Phasellus nec odio quam. In cursus nulla a luctus pellentesque. Cras eget ipsum eu est venenatis lobortis ac vel nulla. Aliquam et turpis interdum, eleifend purus et, consectetur lacus. Nulla efficitur accumsan augue vitae molestie. Ut vitae laoreet ante. Nullam dictum a turpis quis tempus.
 </div>
 <script src=./scripts/utils.js></script>
 <script src=./scripts/Ssimulation.js></script>
-<script src=./scripts/species-simulator/Species_Cell.js></script>
-<script src=./scripts/species-simulator/species_simulator.js></script>
+<script src=./scripts/particle-life/particleLife-App></script>
 </div>
 </main>
 </body>

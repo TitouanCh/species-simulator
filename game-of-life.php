@@ -315,5 +315,6 @@ void main() {
 <script src=./scripts/Ssimulation.js></script>
 <script src=./scripts/game-of-life/GoL.js></script>
 </div>
+</main>
 </body>
 </html>
