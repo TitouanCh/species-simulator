@@ -21,10 +21,9 @@ js
 SCRIPTS
 ./scripts/utils.js
 ./scripts/Ssimulation.js
-./scripts/$PAGETITLE/particleLife-App
+./scripts/$PAGETITLE/particleLife-App.js
 ;
 
 PARAMETERS
 CUSTOM parameters.html
 ;
-

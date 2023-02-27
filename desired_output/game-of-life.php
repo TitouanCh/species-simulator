@@ -75,8 +75,8 @@
 <h1>Game of Life</h1>
 <h2>Game of Life - Species-Simulator.com</h2>
 </div>
-<div id='Game of Life online simulator' class='online_simulator' style='text-align: center; overflow-x:hidden;'>
-<canvas id='Game of Life simulation' class='simulation_canvas'  width = '9' height='8'>
+<div id='Game of Life online simulator' class='online_simulator' style='text-align: center;'>
+<canvas id='Game of Life simulation' class='simulation_canvas'  width = '900' height='1525'>
 </div>
 <div id='Species Simulator parameters' class='simulation_parameters' style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px;">
 
@@ -311,7 +311,10 @@ void main() {
     gl_FragColor = texture2D(u_texture, v_coord);
 }
 </script>
+<script src=./scripts/utils.js></script>
+<script src=./scripts/Ssimulation.js></script>
 <script src=./scripts/game-of-life/GoL.js></script>
 </div>
+</main>
 </body>
 </html>

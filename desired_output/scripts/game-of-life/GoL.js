@@ -38,7 +38,6 @@ function main(){
 	canvas.addEventListener('mousemove', mouseMove);
 	canvas.addEventListener('click', mouseUp);
 	
-	console.log(canvas);
 	var gl = canvas.getContext('webgl');
 	
 	if (!gl) {
@@ -309,7 +308,7 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
 	multiplier = multiplier || 1;
 	const width  = canvas.clientWidth  * multiplier | 0;
 	const height = canvas.clientHeight * multiplier | 0;
-	console.log(width, height)
+
 	if (canvas.width !== width ||  canvas.height !== height) {
 	  canvas.width  = width;
 	  canvas.height = height;

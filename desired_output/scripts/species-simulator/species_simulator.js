@@ -118,7 +118,7 @@ function species_start() {
 	
 	this.species_data_cached = this.species_data.slice();
 	
-	setupWorker = new Worker("./scripts/species_worker.js");
+	setupWorker = new Worker("./scripts/species-simulator/species_worker.js");
 	setupWorker.postMessage(this.ratios);
 	
 	setupWorker.onmessage = (event) => {
