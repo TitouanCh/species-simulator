@@ -1,6 +1,6 @@
 var particle_life = new Ssimulation(
 	document.getElementsByClassName("simulation_canvas")[0],
-    120,
+    60,
     'white',
     'white',
     particle_ready,
@@ -16,16 +16,23 @@ particle_life.color_palette = ["#597d64", "#e8094a", "#315465", "#7b118b", "#02a
 particle_life.number_of_species = 6;
 particle_life.g = 0.0981;
 particle_life.drag = 0.98
-particle_life.number_of_individuals;
+particle_life.number_of_individuals = 200;
 
 // Space Partitionning
 particle_life.space_partitioning = true;
 particle_life.partitions = [];
-particle_life.max_distance_force = 300.0;
+particle_life.max_distance_force = 400.0;
+
+// Multithreading
+particle_life.multithread = true;
+particle_life.worker_number = 4;
+particle_life.threads_active = 0;
+particle_life.worker_list = [];
 
 particle_life.setup_force_book = setup_force_book;
 particle_life.setup_mass_book = setup_mass_book;
 particle_life.setup_space_partitioning = setup_space_partitioning;
+particle_life.setup_multithreading = setup_multithreading;
 particle_life.populate = populate;
 particle_life.force_output = force_output;
 
@@ -38,6 +45,12 @@ function particle_ready() {
 	
 	this.resolutionX = document.getElementById("enviroWidth").value;
 	this.resolutionY = document.getElementById("enviroHeight").value;
+
+	this.multithread = document.getElementById("multithreading").checked;
+
+	if (this.multithread) {
+		this.setup_multithreading();
+	}
 	
 	this.board.width = this.resolutionX;
 	this.board.height = this.resolutionY;
@@ -55,6 +68,8 @@ function particle_ready() {
 	this.force_book = this.setup_force_book(this.number_of_species);
 	this.mass_book = this.setup_mass_book(this.number_of_species);
 
+	this.number_of_individuals = document.getElementById("nbIndividus").value;
+
 	this.data = this.populate(document.getElementById("nbIndividus").value, this.number_of_species);
 }
 
@@ -63,11 +78,10 @@ function particle_main() {
 	this.space_partitioning = document.getElementById("partitioning").checked;
 	this.pause = document.getElementById("pause").checked;
 
-	if (!this.pause){
+	if (!this.pause && (!this.multithread || this.threads_active == 0)){
 		this.process(0.1);
-		this.draw();
 	}
-	FPS = document.getElementById("fpsLimit").value;
+	
 	this.main();
   }, 1000/this.FPS)
 }
@@ -81,7 +95,6 @@ function clear_board(board, board_ctx, board_background, board_border) {
 
 function particle_draw() {
 	clear_board(this.board, this.board_ctx, this.board_background, this.board_border);
-	drawPoint(this.board_ctx, 20, 20, 20, "green");
 	for (var i = 0; i < this.data.length; i++) {
 		//drawPoint(this.board_ctx, this.data[i][1], this.data[i][2], 10, this.color_palette[this.data[i][8] + this.data[i][7]]);
 		drawPoint(this.board_ctx, this.data[i][1], this.data[i][2], 10, this.color_palette[this.data[i][0]]);
@@ -89,8 +102,7 @@ function particle_draw() {
 }
 
 function particle_process(delta) {
-	//console.log(this.data)
-	if (this.space_partitioning) {
+	if (this.space_partitioning || this.multithread) {
 		// Clear partitions
 		this.partitions = this.setup_space_partitioning(this.max_distance_force, this.resolutionX, this.resolutionY);
 		
@@ -104,121 +116,38 @@ function particle_process(delta) {
 		}
 	}
 
-	for (var i = 0; i < this.data.length; i++) {
-		var forceX = 0;
-		var forceY = 0;
-		
-		// Calculate force other on self
-		if (!this.space_partitioning) {
-			for (var j = 0; j < this.data.length; j++) {
-				if (j != i) {
-					force_on_me = this.force_output(this.data[j], this.data[i]);
-					forceX += force_on_me[0];
-					forceY += force_on_me[1];
-				}
-			}
-		} else {
-			list = this.partitions[this.data[i][8]][this.data[i][7]];
+	if (!this.multithread) {
+		this.timenow = new Timer().start();
+		for (var i = 0; i < this.data.length; i++) {
 
-			// up
-			if (this.data[i][8] > 0) { list = list.concat(this.partitions[this.data[i][8] - 1][this.data[i][7]]); }
-			// down
-			if (this.data[i][8] < this.partitions.length - 1) { list = list.concat(this.partitions[this.data[i][8] + 1][this.data[i][7]]); }
-			// left
-			if (this.data[i][7] > 0) { list = list.concat(this.partitions[this.data[i][8]][this.data[i][7] - 1]); }
-			// right
-			if (this.data[i][7] < this.partitions[0].length - 1) { list = list.concat(this.partitions[this.data[i][8]][this.data[i][7] + 1]); }
+			this.data[i] = process_point(this.data[i], i, this.data, this.force_book, this.mass_book, this.resolutionX, this.resolutionY,
+				this.g, this.drag, this.max_distance_force, "norme2", "basic_force_function", delta, this.space_partitioning, this.partitions);
+			
+		}
 
-			// up-left
-			if (this.data[i][8] > 0 && this.data[i][7] > 0) { list = list.concat(this.partitions[this.data[i][8] - 1][this.data[i][7] - 1]); }
-			// up-right
-			if (this.data[i][8] > 0 && this.data[i][7] < this.partitions[0].length - 1) { list = list.concat(this.partitions[this.data[i][8] - 1][this.data[i][7] + 1]); }
-			// down-left
-			if (this.data[i][8] < this.partitions.length - 1 && this.data[i][7] > 0) { list = list.concat(this.partitions[this.data[i][8] + 1][this.data[i][7] - 1]); }
-			// down-right
-			if (this.data[i][8] < this.partitions.length - 1 && this.data[i][7] < this.partitions[0].length - 1) { list = list.concat(this.partitions[this.data[i][8] + 1][this.data[i][7] + 1]); }
-
-			for (var j = 0; j < list.length; j++) {
-				if (j != i) {
-					force_on_me = this.force_output(this.data[list[j]], this.data[i]);
-					forceX += force_on_me[0];
-					forceY += force_on_me[1];
-				}
-			}
+		for (var i = 0; i < this.data.length; i++) {
+			this.data[i][1] = this.data[i][5]; //x
+			this.data[i][2] = this.data[i][6]; //y
 		}
 		
-		var accelX = forceX;
-		var accelY = forceY;
-		
-		this.data[i][3] += accelX * delta; //vx
-		this.data[i][4] += accelY * delta; //vy
-		
-		this.data[i][3] *= this.drag;
-		this.data[i][4] *= this.drag;
-		
-		this.data[i][5] = this.data[i][1] + (d[i][3] * delta); //nx
-		this.data[i][6] = this.data[i][2] + (this.data[i][4] * delta); //ny
-		
-		if (this.data[i][5] < 0) {
-			this.data[i][5] = 0;
-			this.data[i][3] = -this.data[i][3];
+		this.draw()
+	} else {
+		this.timenow = new Timer().start();
+		for (let i = 0; i < this.worker_list.length; i++) {
+			worker_input = [
+				i, this.data, this.partitions, this.worker_list[i].assigned_partitions,
+				this.force_book, this.mass_book, this.resolutionX, this.resolutionY, this.g, this.drag, this.max_distance_force, "norme2", "basic_force_function", delta, this.space_partitioning
+			];
+
+			this.worker_list[i].postMessage(worker_input);
+			this.threads_active++;
+			
 		}
-		if (this.data[i][5] > this.resolutionX) {
-			this.data[i][5] = this.resolutionX - 1;
-			this.data[i][3] = -this.data[i][3];
-		}
-		if (this.data[i][6] < 0) {
-			this.data[i][6] = 0;
-			this.data[i][4] = -this.data[i][4];
-		}
-		if (this.data[i][6] > this.resolutionY) {
-			this.data[i][6] = this.resolutionY - 1;
-			this.data[i][4] = -this.data[i][4];
-		}
+
+		multithread = false;
 		
+		this.data = [];
 	}
-	
-	for (var i = 0; i < this.data.length; i++) {
-		this.data[i][1] = this.data[i][5]; //x
-		this.data[i][2] = this.data[i][6]; //y
-	}
-}
-
-function force_output(emitter, receiver) {
-	var distance = norme2(emitter[1], emitter[2], receiver[1], receiver[2]);
-
-	if (distance > 0.0 && distance < this.max_distance_force) {
-		var normalizedVectorX = (receiver[1] - emitter[1]) / distance;
-		var normalizedVectorY = (receiver[2] - emitter[2]) / distance;
-		
-		var fG = force_function(distance, this.force_book[emitter[0]][receiver[0]], this.g, 20.0)
-
-		return [fG * normalizedVectorX, fG * normalizedVectorY];
-	}
-
-	return [0, 0];
-}
-
-function norme2(x1, y1, x2, y2) {
-	return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-}
-
-function force_function(distance, mass, g, radius) {
-	force = 0;
-
-	if (distance < radius + 10.0) {
-		force = Math.pow(distance - 30, 2);
-	}
-	else if (distance > 250) {
-		force = -(distance - 400)/10;
-		force *= -1 * g * mass;
-	}
-	else if (distance > 100) {
-		fG = (distance - 100)/10;
-		fG *= -1 * g * mass;
-	}
-
-	return force;
 }
 
 function drawPoint(context, x, y, r, color) {
@@ -272,6 +201,50 @@ function setup_space_partitioning(max_distance_force, board_width, board_height)
 	return partition;
 }
 
+function setup_multithreading() {
+	this.partitions = this.setup_space_partitioning(this.max_distance_force, this.resolutionX, this.resolutionY);
+
+	for (let i = 0; i < this.worker_number; i++) {
+		this.worker_list.push(new Worker("./scripts/particle-life/particle_worker.js"));
+	}
+
+	partitions_x = this.partitions[0].length;
+	partitions_y = this.partitions.length;
+	total_partitions = partitions_x * partitions_y;
+	partition_per_worker = Math.ceil(total_partitions/this.worker_number);
+
+	for (let i = 0; i < total_partitions; i += partition_per_worker) {
+		assigned_partitions = [];
+		for (let j = 0; j < partition_per_worker; j++) {
+			if (i + j < total_partitions) {
+				x = parseInt((i + j) % partitions_x);
+				y = parseInt(Math.floor((i + j) / partitions_x));
+				assigned_partitions.push([y, x]);
+			}
+		}
+
+		worker_id = Math.floor(i/partition_per_worker);
+		this.worker_list[worker_id].worker_id = worker_id;
+		this.worker_list[worker_id].assigned_partitions = assigned_partitions;
+
+		this.worker_list[worker_id].onmessage = (event) => {
+			this.threads_active--;
+
+			this.data = this.data.concat(event.data[1]);
+
+			if (this.data.length == this.number_of_individuals) {
+				for (var i = 0; i < this.data.length; i++) {
+					this.data[i][1] = this.data[i][5]; //x
+					this.data[i][2] = this.data[i][6]; //y
+				}
+				
+				this.draw();
+				
+			}
+		}
+	}
+}
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -294,6 +267,13 @@ function restart() {
 
 	particle_life.number_of_species = 6
 	particle_life.g = 0.0981
+	
+	for (let j = 0; j < particle_life.worker_list.length; j++) {
+		particle_life.worker_list[j].terminate();
+	}
+	particle_life.worker_list = []
+	particle_life.threads_active = 0;
+
 	particle_life.ready();
 }
 

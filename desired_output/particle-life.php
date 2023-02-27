@@ -95,9 +95,6 @@
 <label for="pause">Pause : </label>
 <input id="pause" type="checkbox"/>
 
-<label for="partitioning">Partitioning : </label>
-<input id="partitioning" type="checkbox"/>
-
 </br>
 
 <button type="button" onclick="restart();">Restart</button>
@@ -127,12 +124,23 @@
 <label for="drag">1/Friction :</label>
 <input type="number" id="drag" name="drag" value="0.98" min="0" max="1">
 
+</br>
+</br>
+<b>Performance --</b> <br>
+
+<label for="partitioning">Space Partitioning : </label>
+<input id="partitioning" type="checkbox" checked="true"/>
+
+<label for="multithreading">Multithreading : </label>
+<input id="multithreading" type="checkbox" checked="true"/>
+
 </div>
 <div id='Particle Life' description class='simulation_description'>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus sodales, pulvinar velit sit amet, auctor est. Aenean porttitor ipsum ut neque pretium interdum. Maecenas facilisis quis nunc nec commodo. In hac habitasse platea dictumst. Curabitur libero libero, cursus sit amet purus eget, tempus vulputate metus. In sem augue, faucibus vel hendrerit a, gravida vel enim. Phasellus nec odio quam. In cursus nulla a luctus pellentesque. Cras eget ipsum eu est venenatis lobortis ac vel nulla. Aliquam et turpis interdum, eleifend purus et, consectetur lacus. Nulla efficitur accumsan augue vitae molestie. Ut vitae laoreet ante. Nullam dictum a turpis quis tempus.
 </div>
 <script src=./scripts/utils.js></script>
 <script src=./scripts/Ssimulation.js></script>
+<script src=./scripts/particle-life/particle_point></script>
 <script src=./scripts/particle-life/particle_life></script>
 </div>
 </main>
