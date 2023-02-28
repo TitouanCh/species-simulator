@@ -97,6 +97,23 @@ function norme2(x1, y1, x2, y2) {
 	return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
 
+function norme1(x1, y1, x2, y2) {
+	return Math.abs(x1 - x2, 2) + Math.abs(y1 - y2, 2);
+}
+
+function exponential(x1, y1, x2, y2) {
+    if (Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)) < 40) {
+        return 16;
+    }
+    else {
+        return 400
+    }
+}
+
+function max(x1, y1, x2, y2) {
+    return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
+}
+
 function basic_force_function(distance, mass, g, radius) {
 	force = 0;
 

@@ -17,6 +17,7 @@ particle_life.number_of_species = 6;
 particle_life.g = 0.0981;
 particle_life.drag = 0.98
 particle_life.number_of_individuals = 200;
+particle_life.norme = "norme1";
 
 // Space Partitionning
 particle_life.space_partitioning = true;
@@ -77,6 +78,7 @@ function particle_main() {
 	setTimeout(() => {
 	this.space_partitioning = document.getElementById("partitioning").checked;
 	this.pause = document.getElementById("pause").checked;
+	this.norme = document.getElementById("norme").value;
 
 	if (!this.pause && (!this.multithread || this.threads_active == 0)){
 		this.process(0.1);
@@ -87,7 +89,7 @@ function particle_main() {
 }
 
 function clear_board(board, board_ctx, board_background, board_border) {
-	board_ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+	board_ctx.fillStyle = "rgba(255, 255, 255, " + document.getElementById("trail").value.toString() + ")";
 	board_ctx.strokestyle = board_border;
 	board_ctx.fillRect(0, 0, board.width, board.height);
 	board_ctx.strokeRect(0, 0, board.width, board.height);
@@ -121,7 +123,7 @@ function particle_process(delta) {
 		for (var i = 0; i < this.data.length; i++) {
 
 			this.data[i] = process_point(this.data[i], i, this.data, this.force_book, this.mass_book, this.resolutionX, this.resolutionY,
-				this.g, this.drag, this.max_distance_force, "norme2", "basic_force_function", delta, this.space_partitioning, this.partitions);
+				this.g, this.drag, this.max_distance_force, particle_life.norme, "basic_force_function", delta, this.space_partitioning, this.partitions);
 			
 		}
 
@@ -136,7 +138,7 @@ function particle_process(delta) {
 		for (let i = 0; i < this.worker_list.length; i++) {
 			worker_input = [
 				i, this.data, this.partitions, this.worker_list[i].assigned_partitions,
-				this.force_book, this.mass_book, this.resolutionX, this.resolutionY, this.g, this.drag, this.max_distance_force, "norme2", "basic_force_function", delta, this.space_partitioning
+				this.force_book, this.mass_book, this.resolutionX, this.resolutionY, this.g, this.drag, this.max_distance_force, particle_life.norme, "basic_force_function", delta, this.space_partitioning
 			];
 
 			this.worker_list[i].postMessage(worker_input);

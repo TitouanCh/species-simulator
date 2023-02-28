@@ -119,10 +119,24 @@
 <label for="G">G :</label>
 <input type="number" id="G" name="G" value="0.0981" min="0" max="10">
 
+<label for="trail">Trail Modifier :</label>
+<input type="number" id="trail" name="trail" value="0.3" min="0" max="1">
+
 ||
 
 <label for="drag">1/Friction :</label>
 <input type="number" id="drag" name="drag" value="0.98" min="0" max="1">
+
+<br>
+
+<select name="norme" id="norme">
+    <option value="norme2">Euclian</option>
+    <option value="norme1">Absolute</option>
+    <option value="max">max</option>
+    <option value="exponential">exponential</option>
+    <option value="weird">Weird</option>
+</select>
+
 
 </br>
 </br>
