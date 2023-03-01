@@ -40,7 +40,7 @@ void PunkObject::solve_collision(const PunkObject a, bool first_substep) {
             ny += y_pushback * overlap * (a.mass/total_mass);
 
             // Velocity
-            try_bounce(x_pushback, y_pushback, collider_speed_x, collider_speed_y, first_substep);
+            try_bounce(x_pushback, y_pushback, a.vx, a.vy, a.mass, first_substep);
         }
     }
 
@@ -49,45 +49,48 @@ void PunkObject::solve_collision(const PunkObject a, bool first_substep) {
     if (x < mass && y < mass) {
         nx = mass;
         ny = mass;
-        try_bounce(1, 1, first_substep);
+        try_bounce(1, 1, 0, 0, 10, first_substep);
     }
     else if (x < mass && y > 900 - mass) {
         nx = mass;
         ny = 900 - mass;
-        try_bounce(1, -1, first_substep);
+        try_bounce(1, -1, 0, 0, 10, first_substep);
     }
     else if (x > 900 - mass && y < mass) {
         nx = 900 - mass;
         ny = mass;
-        try_bounce(-1, 1, first_substep);
+        try_bounce(-1, 1, 0, 0, 10, first_substep);
     }
-    else if (x > 900 - mass && y < 900 - mass) {
+    else if (x > 900 - mass && y > 900 - mass) {
         nx = 900 - mass;
         ny = 900 - mass;
-        try_bounce(-1, -1, first_substep);
+        try_bounce(-1, -1, 0, 0, 10, first_substep);
     }
     // -- Walls
     else if (x < mass) {
         nx = mass;
-        try_bounce(1, 0, first_substep);
+        try_bounce(1, 0, 0, 0, 10, first_substep);
     }
     else if (y < mass) {
         ny = mass;
-        try_bounce(0, 1, first_substep);
+        try_bounce(0, 1, 0, 0, 10, first_substep);
     }
     else if (x > 900 - mass) {
         nx = 900 - mass;
-        try_bounce(-1, 0, first_substep);
+        try_bounce(-1, 0, 0, 0, 10, first_substep);
     }
     else if (y > 900 - mass) {
         ny = 900 - mass;
-        try_bounce(0, -1, first_substep);
+        try_bounce(0, -1, 0, 0, 10, first_substep);
     }
 }
 
 void PunkObject::solve_collisions(const std::vector<PunkObject>& list, bool first_substep) {
     nx = x;
     ny = y;
+
+    nvx = vx;
+    nvy = vy;
 
     for (int i = 0; i < list.size(); i++) {
         solve_collision(list[i], first_substep);
@@ -97,14 +100,17 @@ void PunkObject::solve_collisions(const std::vector<PunkObject>& list, bool firs
 void PunkObject::establish() {
     x = nx;
     y = ny;
+
+    vx = nvx;
+    vy = nvy;
 };
 
-void PunkObject::try_bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, bool first_substep) {
+void PunkObject::try_bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass, bool first_substep) {
     //std::cout << print_position() << std::endl;
-    if (first_substep) { bounce(x_normal, y_normal); }
+    if (first_substep) { bounce(x_normal, y_normal, collider_speed_x, collider_speed_y, collider_mass); }
 }
 
-void PunkObject::bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y) {
+void PunkObject::bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass) {
     /*
     float speed = norme2(0, 0, vx, vy);
     
@@ -128,12 +134,15 @@ void PunkObject::bounce(float x_normal, float y_normal, float collider_speed_x, 
     // std::cout << vx << ", " << vy << std::endl;
 
     float dot_normal_v = vx * x_normal + vy * y_normal;
-    vx += vx - (2 * dot_normal_v * x_normal);
-    vy += vy - (2 * dot_normal_v * y_normal);
+    nvx = vx - (2 * dot_normal_v * x_normal);
+    nvy = vy - (2 * dot_normal_v * y_normal);
 
-    vx *= bouncyness;
-    vy *= bouncyness;
-
+    float speed = norme2(0, 0, vx, vy);
+    float collider_speed = norme2(0, 0, collider_speed_x, collider_speed_y);
+    float new_v = (bouncyness * collider_mass * (collider_speed - speed) + (mass * speed) + (collider_mass * collider_speed))/(mass + collider_mass);
+    
+    nvx = nvx/speed * new_v;
+    nvy = nvy/speed * new_v;
     // std::cout << vx << ", " << vy << std::endl;
 }
 

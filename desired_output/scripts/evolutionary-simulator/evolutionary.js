@@ -1,3 +1,14 @@
+// Wait for module to initialize,
+createModule().then(({PunkSystem}) => {
+    // Perform computation
+    evolutionary.punksystem = new PunkSystem();
+    for (let i = 0; i < 100; i++) {
+        evolutionary.punksystem.add_PunkObject(getRandomFloat(0, 900), getRandomFloat(0, 900), getRandomFloat(5, 18));
+    }
+    evolutionary.punksystem.process(16, 0.1);
+    evolutionary.data = evolutionary.punksystem.finished;
+ });
+
 var evolutionary = new Ssimulation(
 	document.getElementsByClassName("simulation_canvas")[0],
     60,
@@ -8,7 +19,19 @@ var evolutionary = new Ssimulation(
 );
 
 
-evolutionary.data = [];
+/* Format [
+    [ Frame
+        [ Regular
+            [[x, y, m], etc...],
+        ]
+    ]
+]
+
+data[frame][category_of_object][object_id][object_propertie]
+except it's a C++ array
+*/
+evolutionary.data = undefined;
+evolutionary.frame = -1;
 evolutionary.draw = evolutionary_draw;
 evolutionary.process = evolutionary_process;
 
@@ -44,6 +67,7 @@ function clear_board(board, board_ctx, board_background, board_border) {
 function evolutionary_draw() {
 	clear_board(this.board, this.board_ctx, this.board_background, this.board_border);
 	
+    /*
     // Body Test
     for (var i = 0; i < this.palette.length; i++) {
         drawPoint(this.board_ctx, 20 + i*30, 20, 12 + i, this.palette[i]);
@@ -61,12 +85,24 @@ function evolutionary_draw() {
     drawPoint(this.board_ctx, x1, y1, mass1, this.palette[0]);
     drawPoint(this.board_ctx, x2, y2, mass2, this.palette[0]);
     drawEllipseByCenter(this.board_ctx, 40, 60, 20, 30);
+    */
 
+    if (this.frame >= 0) {
+        frame_data = evolutionary.punksystem.get_frame_PunkObject(this.frame);
+        for (let i = 0; i < frame_data.size(); i++) {
+            datapoint = frame_data.get(i);
+            drawPoint(this.board_ctx, datapoint.get(0), datapoint.get(1), datapoint.get(2), this.palette[0]);
+        }
+    }
     
 }
 
 function evolutionary_process(delta) {
-	
+	if (this.data) {
+        this.frame = (this.frame + 1) % 200;
+    } else {
+        this.frame = -1;
+    }
 }
 
 function drawPoint(context, x, y, r, color) {
@@ -150,6 +186,10 @@ function restart() {
 
 function norme2(x1, y1, x2, y2) {
 	return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+}
+
+function getRandomFloat(min, max) {
+    return Math.random() * (max - min);
 }
 
 window.addEventListener("mousemove", e => {

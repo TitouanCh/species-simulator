@@ -18,6 +18,9 @@ struct PunkObject
     float nx = 0;
     float ny = 0;
 
+    float nvx = 0;
+    float nvy = 0;
+
     float mass = 10;
     float bouncyness = 0.5;
 
@@ -35,9 +38,9 @@ struct PunkObject
 
     void establish();
 
-    void try_bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, bool first_substep);
+    void try_bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass, bool first_substep);
 
-    void bounce(float x_normal, float y_normal,  float collider_speed_x, float collider_speed_y);
+    void bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass);
     
     std::vector<float> record();
 

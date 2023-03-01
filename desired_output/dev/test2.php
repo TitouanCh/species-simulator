@@ -5,7 +5,7 @@
 <link rel='stylesheet' href='style.css'>
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<script type="text/javascript" src="./scripts/evolutionary-simulator/punksystem.js"></script>
+<script type="text/javascript" src="punksystem.js"></script>
 </head>
 <body>
 <header style="position: sticky; top: 0; width: 100%">
@@ -128,9 +128,9 @@
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus sodales, pulvinar velit sit amet, auctor est. Aenean porttitor ipsum ut neque pretium interdum. Maecenas facilisis quis nunc nec commodo. In hac habitasse platea dictumst. Curabitur libero libero, cursus sit amet purus eget, tempus vulputate metus. In sem augue, faucibus vel hendrerit a, gravida vel enim. Phasellus nec odio quam. In cursus nulla a luctus pellentesque. Cras eget ipsum eu est venenatis lobortis ac vel nulla. Aliquam et turpis interdum, eleifend purus et, consectetur lacus. Nulla efficitur accumsan augue vitae molestie. Ut vitae laoreet ante. Nullam dictum a turpis quis tempus.
 </div>
 
-<script src=./scripts/utils.js></script>
-<script src=./scripts/Ssimulation.js></script>
-<script src=./scripts/evolutionary-simulator/evolutionary.js></script>
+<script src=/scripts/utils.js></script>
+<script src=/scripts/Ssimulation.js></script>
+<script src=/scripts/evolutionary-simulator/evolutionary.js></script>
 </div>
 </main>
 </body>
