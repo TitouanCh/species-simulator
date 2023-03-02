@@ -24,6 +24,8 @@ struct PunkObject
     float mass = 10;
     float bouncyness = 0.5;
 
+    std::vector<PunkObject*> connexions;
+
     const std::function<float(float, float, float, float)> norme = norme2;
 
     PunkObject(float _x, float _y, float _mass);
@@ -41,6 +43,10 @@ struct PunkObject
     void try_bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass, bool first_substep);
 
     void bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass);
+
+    void connect(PunkObject* a);
+    
+    bool connected_to(PunkObject a);
     
     std::vector<float> record();
 
@@ -60,4 +66,17 @@ struct PunkObject
     std::string print_position() {
         return "[" + std::to_string(x) + ", " + std::to_string(y) + "]";
     }
+};
+
+struct PunkJoint
+{
+    PunkObject* object1;
+    PunkObject* object2;
+    float distance;
+
+    PunkJoint(PunkObject* _object1, PunkObject* _object2, float _distance);
+
+    void process();
+
+    std::vector<float> record();
 };
