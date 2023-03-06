@@ -1,5 +1,5 @@
 #include <emscripten/bind.h>
-#include "system.hpp"
+#include "PunkSystem.hpp"
 
 using namespace emscripten;
 
@@ -14,6 +14,8 @@ EMSCRIPTEN_BINDINGS(punksystem) {
       .function("print3", &PunkSystem::print3)
       .function("get_record", &PunkSystem::get_record)
       .function("get_frame", &PunkSystem::get_frame)
+      .function("add_random_Organism", &PunkSystem::add_random_Organism)
+      .function("add_Organism", &PunkSystem::add_Organism)
       ;
    
    register_vector<float>("VectorFloat");
@@ -21,4 +23,5 @@ EMSCRIPTEN_BINDINGS(punksystem) {
    register_vector<std::vector<std::vector<float>>>("VectorVectorVectorFloat");
    register_vector<std::vector<std::vector<std::vector<float>>>>("VectorVectorVectorVectorFloat");
    register_vector<std::vector<std::vector<std::vector<std::vector<float>>>>>("VectorVectorVectorVectorVectorFloat");
+   register_vector<std::uint64_t>("VectorInt64");
 }

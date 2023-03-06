@@ -1,0 +1,11 @@
+C:\Users\titouan\Documents\bored\species-simulator\rs\evolutionary-enginge-rapier\target\debug\deps\approx-1530f41a976e3518.rmeta: C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs
+
+C:\Users\titouan\Documents\bored\species-simulator\rs\evolutionary-enginge-rapier\target\debug\deps\libapprox-1530f41a976e3518.rlib: C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs
+
+C:\Users\titouan\Documents\bored\species-simulator\rs\evolutionary-enginge-rapier\target\debug\deps\approx-1530f41a976e3518.d: C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs
+
+C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\lib.rs:
+C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\abs_diff_eq.rs:
+C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\relative_eq.rs:
+C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\ulps_eq.rs:
+C:\Users\titouan\.cargo\registry\src\github.com-1ecc6299db9ec823\approx-0.5.1\src\macros.rs:

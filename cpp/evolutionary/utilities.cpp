@@ -4,6 +4,18 @@ float norme2(float x1, float y1, float x2, float y2) {
     return std::sqrt(std::pow(x2 - x1, 2) + std::pow(y2 - y1, 2));
 }
 
+uint64_t random64() {
+  uint64_t r = 0;
+  for (int i=0; i<64; i += 15 /*30*/) {
+    r = r*((uint64_t)RAND_MAX + 1) + rand();
+  }
+  return r;
+}
+
+int random(int max, int buffer) {
+    return (rand() % max) + buffer;
+}
+
 PunkObject::PunkObject(float _x, float _y, float _mass) {
     x = _x;
     y = _y;
@@ -12,6 +24,8 @@ PunkObject::PunkObject(float _x, float _y, float _mass) {
 };
 
 void PunkObject::process(float delta) {
+    vy += 9.8;
+
     vx *= 0.98;
     vy *= 0.98;
 
@@ -43,7 +57,7 @@ void PunkObject::solve_collision(const PunkObject a, bool first_substep) {
             // Velocity
             try_bounce(x_pushback, y_pushback, a.vx, a.vy, a.mass, first_substep);
 
-            std::cout << "collision" << std::endl;
+            //std::cout << "collision" << std::endl;
         }
     }
 
@@ -110,7 +124,7 @@ void PunkObject::establish() {
 
 void PunkObject::try_bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass, bool first_substep) {
     //std::cout << print_position() << std::endl;
-    if (first_substep && false) { bounce(x_normal, y_normal, collider_speed_x, collider_speed_y, collider_mass); }
+    if (first_substep) { bounce(x_normal, y_normal, collider_speed_x, collider_speed_y, collider_mass); }
 }
 
 void PunkObject::bounce(float x_normal, float y_normal, float collider_speed_x, float collider_speed_y, float collider_mass) {
@@ -170,6 +184,7 @@ std::vector<float> PunkObject::record() {
 }
 
 PunkJoint::PunkJoint(PunkObject* _object1, PunkObject* _object2, float _distance) {
+    std::cout << "test4" << std::endl;
     object1 = _object1;
     object2 = _object2;
     distance = _distance;
