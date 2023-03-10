@@ -1,0 +1,1 @@
+C:\Users\titouan\Documents\bored\species-simulator\rs\evolutionary-enginge-rapier\hello-wasm\target\wasm32-unknown-unknown\release\hello_wasm.wasm: C:\Users\titouan\Documents\bored\species-simulator\rs\evolutionary-enginge-rapier\hello-wasm\src\lib.rs

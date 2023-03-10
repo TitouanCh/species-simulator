@@ -28,6 +28,9 @@ pub struct PunkSystem {
     pub hooks: Box<dyn PhysicsHooks>,
 
     pub punk_objects: Vec<PunkObject>,
+
+    pub record: Vec<Vec<Vec<Vec<f32>>>>
+    
 }
 
 impl PunkSystem {
@@ -49,7 +52,9 @@ impl PunkSystem {
 
             //event_handler: eve,
 
-            punk_objects: Vec::new()
+            punk_objects: Vec::new(),
+
+            record: Vec::new()
         }
     }
 
@@ -72,6 +77,20 @@ impl PunkSystem {
     }
 
     pub fn step(&mut self, delta : f32) {
+        // Record ---
+        let mut frame = Vec::new();
+
+        let mut punk_objects_data = Vec::new();
+
+        for punk_object in &self.punk_objects {
+            punk_objects_data.push(punk_object.record(&self.bodies));
+        }
+
+        frame.push(punk_objects_data);
+
+        self.record.push(frame);
+
+        // Physics ---
         self.pipeline.step(
             &self.gravity,
             &self.integration_parameters,
@@ -89,10 +108,28 @@ impl PunkSystem {
         );
     }
 
-    pub fn print3(self) {
+    pub fn process(&mut self, delta: f32, epsilon: f32) {
+        let mut i = 0.0;
+        while i < delta {
+            self.step(epsilon);
+            i += epsilon;
+        }
+    }
+
+    pub fn get_frame(&self, frame : usize) -> Vec<Vec<Vec<f32>>> {
+        if frame < self.record.len() {
+            return self.record[frame].clone();
+        }
+        return Vec::new();
+    }
+
+    pub fn print3(&self) -> String {
+        let mut result = String::new();
         for i in 0..3 {
             let body = &self.bodies[self.punk_objects[i].handle];
-            println!("{}: [{}, {}]", i, body.translation().x, body.translation().y);
+            result += &format!("{}: [{}, {}] ,", i, body.translation().x, body.translation().y);
         }
+
+        result
     }
 }
