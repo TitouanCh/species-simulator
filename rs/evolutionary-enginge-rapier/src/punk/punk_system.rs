@@ -1,4 +1,5 @@
 use std::vec::Vec;
+use rand::prelude::*;
 
 use rapier2d::dynamics::{
     CCDSolver, ImpulseJointSet, IntegrationParameters, IslandManager, MultibodyJointSet,
@@ -47,7 +48,7 @@ impl PunkSystem {
             pipeline: PhysicsPipeline::new(),
             query_pipeline: QueryPipeline::new(),
             integration_parameters: IntegrationParameters::default(),
-            gravity: Vector::y() * -9.81,
+            gravity: Vector::y() * 9.81,
             hooks: Box::new(()),
 
             //event_handler: eve,
@@ -76,7 +77,19 @@ impl PunkSystem {
         self.punk_objects.push(object);
     }
 
-    pub fn step(&mut self, delta : f32) {
+    pub fn add_wall(&mut self, position : Vector<Real>, dimensions : Vector<Real>) {
+        let collider = ColliderBuilder::cuboid(dimensions.x, dimensions.y)
+            .build();
+        
+        let fixed_body = RigidBodyBuilder::fixed()
+            .translation(position)
+            .build();
+        
+        let body_handle = self.bodies.insert(fixed_body);
+        self.colliders.insert_with_parent(collider, body_handle, &mut self.bodies);
+    }
+
+    pub fn step(&mut self, epsilon : i32) {
         // Record ---
         let mut frame = Vec::new();
 
@@ -91,6 +104,7 @@ impl PunkSystem {
         self.record.push(frame);
 
         // Physics ---
+        for i in 0..epsilon {
         self.pipeline.step(
             &self.gravity,
             &self.integration_parameters,
@@ -106,13 +120,14 @@ impl PunkSystem {
             &(),
             &()
         );
+        }
     }
 
-    pub fn process(&mut self, delta: f32, epsilon: f32) {
+    pub fn process(&mut self, delta: f32, epsilon: i32) {
         let mut i = 0.0;
         while i < delta {
             self.step(epsilon);
-            i += epsilon;
+            i += 1.0;
         }
     }
 
@@ -131,5 +146,27 @@ impl PunkSystem {
         }
 
         result
+    }
+
+
+
+
+
+    // Simulations
+    pub fn base_simulation(&mut self, simulation_dimensions: Vector<Real>) {
+        // Walls
+        self.add_wall(vector![0.0, simulation_dimensions.y], vector![simulation_dimensions.x, 40.0]);
+
+        // Balls
+        let mut rng = rand::thread_rng();
+        for _i in 1..100 {
+            let (x, y) : (f32, f32) = rng.gen();
+            let x = x * simulation_dimensions.x;
+            let y = y * simulation_dimensions.y;
+
+            self.add_punk_object(vector![x, y], 20.0);
+        }
+
+        self.process(200.0, 6);
     }
 }

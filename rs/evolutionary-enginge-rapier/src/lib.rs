@@ -46,26 +46,30 @@ impl PunkContext {
         self.systems.len() - 1
     }
 
-    pub fn test_system(&mut self, system_index : usize) -> String {
-        &self.systems[system_index].add_punk_object(vector![0.0, 10.0], 5.0);
-        &self.systems[system_index].add_punk_object(vector![20.0, 10.0], 5.0);
-        &self.systems[system_index].add_punk_object(vector![40.0, 10.0], 5.0);
-
-        &self.systems[system_index].step(0.5);
-        &self.systems[system_index].step(0.5);
-        &self.systems[system_index].step(0.5);
-
-        self.systems[system_index].print3()
+    pub fn base_simulation(&mut self, system_index : usize, simulation_width : f32, simulation_height : f32) {
+        self.systems[system_index].base_simulation(vector![simulation_width, simulation_height]);
     }
 
-    pub fn process_system(&mut self, system_index : usize, delta : f32, epsilon : f32) {
-        &self.systems[system_index].process(delta, epsilon);
+    pub fn process_system(&mut self, system_index : usize, delta : f32, epsilon : i32) {
+        self.systems[system_index].process(delta, epsilon);
     }
 
     pub fn get_system_frame(&self, system_index : usize, frame : usize) -> String {
         match serde_json::to_string(&self.systems[system_index].get_frame(frame)) {
             Ok(j) => return j,
-            Err(e) => return String::new()
+            Err(_e) => return String::new()
         }
+    }
+
+    pub fn test_system(&mut self, system_index : usize) -> String {
+        self.systems[system_index].add_punk_object(vector![0.0, 10.0], 5.0);
+        self.systems[system_index].add_punk_object(vector![20.0, 10.0], 5.0);
+        self.systems[system_index].add_punk_object(vector![40.0, 10.0], 5.0);
+
+        self.systems[system_index].step(4);
+        self.systems[system_index].step(4);
+        self.systems[system_index].step(4);
+
+        self.systems[system_index].print3()
     }
 }
