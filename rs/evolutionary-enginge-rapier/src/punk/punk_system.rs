@@ -89,6 +89,14 @@ impl PunkSystem {
         self.colliders.insert_with_parent(collider, body_handle, &mut self.bodies);
     }
 
+    pub fn add_joint(&mut self, idx1 : usize, idx2 : usize, joint_point : Point<Real>) {
+        let joint = RevoluteJointBuilder::new()
+            .local_anchor1(point![0.0, 0.0])
+            .local_anchor2(joint_point);
+        
+        self.impulse_joints.insert(self.punk_objects[idx1].handle, self.punk_objects[idx2].handle, joint, true);
+    }
+
     pub fn step(&mut self, epsilon : i32) {
         // Record ---
         let mut frame = Vec::new();
@@ -159,7 +167,7 @@ impl PunkSystem {
 
         // Balls
         let mut rng = rand::thread_rng();
-        for _i in 1..100 {
+        for _i in 1..20 {
             let (x, y) : (f32, f32) = rng.gen();
             let x = x * simulation_dimensions.x;
             let y = y * simulation_dimensions.y;
