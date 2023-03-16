@@ -7,9 +7,12 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 </head>
 <body>
-<header style="position: sticky; top: 0; width: 100%">
+<header>
     <ul style="background: linear-gradient(0.25turn, #333 35%, #000);">
-    <li><a href="/en/index.php" style="font-weight: bold;">LOGO -- Species-Simulator.com</a></li>
+    <li style="width:280px;">
+        <a href="/en/index.php" style="font-weight: bold; padding-left: 34px">
+        <img class="species-simulator-logo" src="/img/logo4.png" height="36">Species-Simulator.com</a>
+    </li>
     <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Cellular Automata</a>
         <div class="dropdown-content">
@@ -24,14 +27,16 @@
         <div class="dropdown-content">
             <a href="/en/other-cellular-automata/particle-life.php">Particle Life</a>
         </div>
-    </li><li class="dropdown">
+    </li>
+    <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Differential Equations</a>
         <div class="dropdown-content">
             <a href="/en/differential-equations/">Basic Differential Equations</a>
             <a href="/en/differential-equations/lotka-volterra.php">Lotka-Volterra</a>
         </div>
     <!-- <li><a href="/en/case-studies">Case Study</a></li> -->
-    </li><li class="dropdown">
+    </li>
+    <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Macroevolution</a>
         <div class="dropdown-content">
             <a href="/en/macroevolution/newick-tree-parser.php">Newick Tree Parser</a>
@@ -40,34 +45,115 @@
     </li>
     
     <li class="phone-menu">
-        <div class="phone-button" width="16" style="position: absolute; top: 16px; right: 16px;">
-          <object data="menu.svg" width="16" style="pointer-events: none; filter: invert(100%);"></object>
+        <input id="test" type="checkbox"/>
+        <div class="phone-button" width="16">
+          <object data="menu.svg" width="16" style="pointer-events: none;"></object>
         </div>
+        <div class="phone-side-menu">
+            <ul class="phone-list">
+                <li id="phone-home" class="phone-list-item show">
+                    <a href="index.php">Home</a>
+                </li>
+                <li id="phone-cellular-automata" class="phone-list-item show">
+                    Cellular Automata
+                </li>
+                <li id="phone-other-automata" class="phone-list-item show">
+                    Other Automata
+                </li>
+                <li id="phone-differential-equations" class="phone-list-item show">
+                    Differential Equations
+                </li>
+                <li id="phone-macroevolution" class="phone-list-item show">
+                    Macroevolution
+                </li>
+            </ul>
+        </div>
+
+        <script>
+            itemsList = document.querySelector('.phone-list');
+
+            const phoneCatalog = {
+                "phone-cellular-automata" : ["<a href='/en/cellular-automata/'>Understanding Cellular Automata</a>", "<a href='/en/cellular-automata/game-of-life.php'>John Conway's Game of Life</a>", "<a href='/en/cellular-automata/species-simulator.php'>Species Simulator</a>"],
+                "phone-other-automata" : ["<a href='/en/other-cellular-automata/particle-life.php'>Particle Life</a>"],
+                "phone-differential-equations" : ["<a href='/en/differential-equations/'>Basic Differential Equations</a>", "<a href='/en/differential-equations/lotka-volterra.php'>Lotka-Volterra</a>"],
+                "phone-macroevolution" : ["<a href='/en/macroevolution/newick-tree-parser.php'>Newick Tree Parser</a>", "<a href='/en/macroevolution/tree-fossil-generator.php'>Tree and Fossil Data Generator</a>"],
+                "base" : ["<a href='index.php'>Home</a>", "Cellular Automata", "Other Automata", "Differential Equations", "Macroevolution"]
+            };
+
+            function addPhoneButton(text) {
+                const newItem = document.createElement('li');
+                newItem.innerHTML = text;
+                newItem.classList.add("phone-list-item");
+                itemsList.appendChild(newItem);
+                setTimeout(() => {
+                    newItem.classList.add('show');
+                }, 10);
+            }
+
+            function phoneButtonClick() {
+                let passed = false;
+                itemsList.querySelectorAll(".phone-list-item").forEach((item) => {
+                    if (this.innerHTML != item.innerHTML) {
+                        item.classList.remove('show');
+                        if (!passed) {item.classList.add("shrink");}
+                        setTimeout(() => {
+                            item.remove();
+                        }, 400);
+                    } else {
+                        passed = true;
+                        item.innerHTML = "← &nbsp; &nbsp; <b>" + item.innerHTML + "</b>";
+                        item.onclick = phoneBackClick;
+                    }
+                });
+                setTimeout(() => {
+                    phoneCatalog[this.id].forEach((item) => {
+                        addPhoneButton(item);
+                    });
+                }, 400);
+                
+            }
+
+            function phoneBackClick() {
+                itemsList.querySelectorAll(".phone-list-item").forEach((item) => {
+                    item.classList.remove('show');
+                    setTimeout(() => {
+                        item.remove();
+                    }, 400);
+                });
+
+                itemsList = document.querySelector('.phone-list');
+
+                setTimeout(() => {
+                    let _i = 0;
+                    phoneCatalog["base"].forEach((item) => {
+                        addPhoneButton(item);
+                        console.log(itemsList.children);
+                        if (_i == 1) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-cellular-automata';
+                        }
+                        if (_i == 2) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-other-automata';
+                        }
+                        if (_i == 3) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-differential-equations';
+                        }
+                        if (_i == 4) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-macroevolution';
+                        }
+                        _i++;
+
+                        if (phoneCatalog[itemsList.children[itemsList.children.length - 1].id]) {itemsList.children[itemsList.children.length - 1].onclick = phoneButtonClick;};
+                    });
+                }, 400);
+            }
+
+            itemsList.querySelectorAll(".phone-list-item").forEach((item) => {
+                if (phoneCatalog[item.id]) {item.onclick = phoneButtonClick};
+            });
+
+        </script>
     </li>
     </ul>
-    
-    <script>
-    function resizeTaskBar() {
-        var phone = window.innerWidth < 1100;
-        var phone_menu = document.getElementsByClassName("phone-menu")[0];
-        var desktop_menu = document.getElementsByClassName("dropdown");
-        if (phone) {
-            phone_menu.style.display = "initial";
-            for (let i = 0; i < desktop_menu.length; i++) {
-                desktop_menu[i].style.display = "none";
-            }
-        }
-        else {
-            phone_menu.style.display = "none";
-            for (let i = 0; i < desktop_menu.length; i++) {
-                desktop_menu[i].style.display = "initial";
-            }
-        }
-    }
-    
-    resizeTaskBar();
-    addEventListener("resize", (event) => {resizeTaskBar()});
-    </script>
 </header>
 <main id = 'Particle Life'>
 <div class='article'>
@@ -125,9 +211,87 @@ document.getElementById("enviroWidth").value = sizerWidth/1.5;
 <input type="number" id="drag" name="drag" value="0.98" min="0" max="1">
 
 </div>
-<div id='Particle Life' description class='simulation_description'>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus sodales, pulvinar velit sit amet, auctor est. Aenean porttitor ipsum ut neque pretium interdum. Maecenas facilisis quis nunc nec commodo. In hac habitasse platea dictumst. Curabitur libero libero, cursus sit amet purus eget, tempus vulputate metus. In sem augue, faucibus vel hendrerit a, gravida vel enim. Phasellus nec odio quam. In cursus nulla a luctus pellentesque. Cras eget ipsum eu est venenatis lobortis ac vel nulla. Aliquam et turpis interdum, eleifend purus et, consectetur lacus. Nulla efficitur accumsan augue vitae molestie. Ut vitae laoreet ante. Nullam dictum a turpis quis tempus.
-</div>
+<h2>What is particle life?</h2>
+
+<p>
+    Particle life is a simulation that depicts life-like behavior arising from particles following a set of simple rules.
+</p>
+    
+<h2>What are the rules of particle life?</h2>
+
+<p>
+    Particle life is made up of many particles. You can see them flying around above. Each particle has the ability to either attract or repel other particles.
+</p>
+
+<p>
+    How particles interact, if they repel or attract each other, is dependent on their color.
+</p>
+
+<p>
+    At the start of the simulation, particles are randomly assigned a color, which represents their species. Next, each possible pair of colors (order matters) is assigned a random number. This random number will determine the nature of the interaction between the two colors: a negative number indicates an attractive force, while a positive number represents a repulsive force.
+</p>
+
+<table>
+    <tbody>
+        <tr>
+            <td>--/--</td>
+            <td>Blue</td>
+            <td>Green</td>
+            <td>Red</td>
+        </tr>
+        <tr>
+            <td>Blue</td>
+            <td>--/--</td>
+            <td>1.8</td>
+            <td>-5.2</td>
+        </tr>
+        <tr>
+            <td>Green</td>
+            <td>-4.3</td>
+            <td>--/--</td>
+            <td>0.7</td>
+        </tr>
+        <tr>
+            <td>Red</td>
+            <td>-3.2</td>
+            <td>7.3</td>
+            <td>--/--</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    Interactions don't have to be symmetrical. For example, in the table above: blue attracts green but green repels blue, this can result in an interesting glider effect.
+</p>
+
+<p>
+    The strength of particle interactions diminishes based on the distance between two particles. This distance is determined using a selected norm. Additionally, if two particles get too close, a strong repelling force is applied to prevent them from passing through each other.
+</p>
+
+<p>
+    All these interactions can lead to endless energy creation in our simulation. We counteract this by adding a strong friction force to all particles, which prevents them from continuously accelerating.
+</p>
+
+<p>
+    That's all there really is to it, still, even with those simple rules we can get some fun results.
+</p>
+
+<h2>
+    How is it made?
+</h2>
+
+<p>
+    Particle life is built using JavaScript entirely.
+</p>
+
+<p>
+    However, due to the O(n²) complexity of each step in the simulation, as calculating the next position of each particle requires determining the resulting force from each other particle acting on it, we need to employ two methods to optimize the simulation.
+</p>
+
+<ul>
+    <li>The first method is space partitioning, where we divide the simulation space into partitions. For each particle, we only need to calculate the interaction with particles from its partition and neighboring partitions.</li>
+    <li>The second method is multithreading which is built on top of space partitioning. We can assign different partitions to different threads. The performance benefit of this method varies because serializing the data and sending it to the threads each frame proves to be quite expensive.</li>
+</ul>
 <script src=./scripts/utils.js></script>
 <script src=./scripts/Ssimulation.js></script>
 <script src=./scripts/particle-life/particleLife-App.js></script>

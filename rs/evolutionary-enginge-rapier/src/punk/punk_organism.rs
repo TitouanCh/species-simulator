@@ -52,6 +52,7 @@ impl PunkOrganism {
             let mass : f32 = (self.dna[i + j + 3] % (MAX_MASS * 10)) as f32 / 10.0;
 
             dnaMol.push(PunkMol {position : vector![x, y], mass : mass, symetries : symetries});
+            //println!("dna mol : {:?}", dnaMol);
 
             i += 3 + j;
         }
@@ -72,6 +73,7 @@ impl PunkOrganism {
             }
 
             embryo = PunkEmbryo { position : mol.position, mass : mol.mass as f32, children : children };
+            //println!("dna mol : {:?}", embryo);
             embryos.push(embryo);
         }
 
@@ -107,6 +109,7 @@ impl PunkOrganism {
 
 }
 
+//#[derive(Debug)]
 pub struct PunkMol {
     pub position : Vector<Real>,
     pub mass : f32,

@@ -1,0 +1,81 @@
+<h2>What is particle life?</h2>
+
+<p>
+    Particle life is a simulation that depicts life-like behavior arising from particles following a set of simple rules.
+</p>
+    
+<h2>What are the rules of particle life?</h2>
+
+<p>
+    Particle life is made up of many particles. You can see them flying around above. Each particle has the ability to either attract or repel other particles.
+</p>
+
+<p>
+    How particles interact, if they repel or attract each other, is dependent on their color.
+</p>
+
+<p>
+    At the start of the simulation, particles are randomly assigned a color, which represents their species. Next, each possible pair of colors (order matters) is assigned a random number. This random number will determine the nature of the interaction between the two colors: a negative number indicates an attractive force, while a positive number represents a repulsive force.
+</p>
+
+<table>
+    <tbody>
+        <tr>
+            <td>--/--</td>
+            <td>Blue</td>
+            <td>Green</td>
+            <td>Red</td>
+        </tr>
+        <tr>
+            <td>Blue</td>
+            <td>--/--</td>
+            <td>1.8</td>
+            <td>-5.2</td>
+        </tr>
+        <tr>
+            <td>Green</td>
+            <td>-4.3</td>
+            <td>--/--</td>
+            <td>0.7</td>
+        </tr>
+        <tr>
+            <td>Red</td>
+            <td>-3.2</td>
+            <td>7.3</td>
+            <td>--/--</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    Interactions don't have to be symmetrical. For example, in the table above: blue attracts green but green repels blue, this can result in an interesting glider effect.
+</p>
+
+<p>
+    The strength of particle interactions diminishes based on the distance between two particles. This distance is determined using a selected norm. Additionally, if two particles get too close, a strong repelling force is applied to prevent them from passing through each other.
+</p>
+
+<p>
+    All these interactions can lead to endless energy creation in our simulation. We counteract this by adding a strong friction force to all particles, which prevents them from continuously accelerating.
+</p>
+
+<p>
+    That's all there really is to it, still, even with those simple rules we can get some fun results.
+</p>
+
+<h2>
+    How is it made?
+</h2>
+
+<p>
+    Particle life is built using JavaScript entirely.
+</p>
+
+<p>
+    However, due to the O(n²) complexity of each step in the simulation, as calculating the next position of each particle requires determining the resulting force from each other particle acting on it, we need to employ two methods to optimize the simulation.
+</p>
+
+<ul>
+    <li>The first method is space partitioning, where we divide the simulation space into partitions. For each particle, we only need to calculate the interaction with particles from its partition and neighboring partitions.</li>
+    <li>The second method is multithreading which is built on top of space partitioning. We can assign different partitions to different threads. The performance benefit of this method varies because serializing the data and sending it to the threads each frame proves to be quite expensive.</li>
+</ul>

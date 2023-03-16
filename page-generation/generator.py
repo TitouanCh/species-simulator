@@ -7,8 +7,9 @@ test_data = {
         }
 
 def read_html(path, filename):
-    file = open(path + "/" + filename, 'r')
+    file = open(path + "/" + filename, 'r', encoding='utf-8')
     html = []
+
     for line in file:
         html.append(line.replace("\n", ""))
     return html
@@ -109,6 +110,6 @@ def generate_body(data):
     return arr1 + arr2 + arr3 + arr4 + arr5 + arr6 + arr7 + arr8 + arr9
 
 def generate_page(path, filename, data):
-    with open(path + filename + ".php", 'w') as f:
+    with open(path + filename + ".php", 'w', encoding='utf-8') as f:
         write_arr(f, generate_head(data))
         write_arr(f, generate_body(data))

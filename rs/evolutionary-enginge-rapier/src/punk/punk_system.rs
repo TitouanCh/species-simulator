@@ -203,6 +203,7 @@ impl PunkSystem {
             for _j in 1..48 {
                 let i : i16 = rng.gen();
                 dna.push(i);
+                //println!("dna : {:?}", dna);
             }
 
             self.add_punk_organism(vector![x, y], dna);

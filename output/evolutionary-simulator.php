@@ -7,9 +7,12 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 </head>
 <body>
-<header style="position: sticky; top: 0; width: 100%">
+<header>
     <ul style="background: linear-gradient(0.25turn, #333 35%, #000);">
-    <li><a href="/en/index.php" style="font-weight: bold;">LOGO -- Species-Simulator.com</a></li>
+    <li style="width:280px;">
+        <a href="/en/index.php" style="font-weight: bold; padding-left: 34px">
+        <img class="species-simulator-logo" src="/img/logo4.png" height="36">Species-Simulator.com</a>
+    </li>
     <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Cellular Automata</a>
         <div class="dropdown-content">
@@ -24,14 +27,16 @@
         <div class="dropdown-content">
             <a href="/en/other-cellular-automata/particle-life.php">Particle Life</a>
         </div>
-    </li><li class="dropdown">
+    </li>
+    <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Differential Equations</a>
         <div class="dropdown-content">
             <a href="/en/differential-equations/">Basic Differential Equations</a>
             <a href="/en/differential-equations/lotka-volterra.php">Lotka-Volterra</a>
         </div>
     <!-- <li><a href="/en/case-studies">Case Study</a></li> -->
-    </li><li class="dropdown">
+    </li>
+    <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Macroevolution</a>
         <div class="dropdown-content">
             <a href="/en/macroevolution/newick-tree-parser.php">Newick Tree Parser</a>
@@ -40,34 +45,115 @@
     </li>
     
     <li class="phone-menu">
-        <div class="phone-button" width="16" style="position: absolute; top: 16px; right: 16px;">
-          <object data="menu.svg" width="16" style="pointer-events: none; filter: invert(100%);"></object>
+        <input id="test" type="checkbox"/>
+        <div class="phone-button" width="16">
+          <object data="menu.svg" width="16" style="pointer-events: none;"></object>
         </div>
+        <div class="phone-side-menu">
+            <ul class="phone-list">
+                <li id="phone-home" class="phone-list-item show">
+                    <a href="index.php">Home</a>
+                </li>
+                <li id="phone-cellular-automata" class="phone-list-item show">
+                    Cellular Automata
+                </li>
+                <li id="phone-other-automata" class="phone-list-item show">
+                    Other Automata
+                </li>
+                <li id="phone-differential-equations" class="phone-list-item show">
+                    Differential Equations
+                </li>
+                <li id="phone-macroevolution" class="phone-list-item show">
+                    Macroevolution
+                </li>
+            </ul>
+        </div>
+
+        <script>
+            itemsList = document.querySelector('.phone-list');
+
+            const phoneCatalog = {
+                "phone-cellular-automata" : ["<a href='/en/cellular-automata/'>Understanding Cellular Automata</a>", "<a href='/en/cellular-automata/game-of-life.php'>John Conway's Game of Life</a>", "<a href='/en/cellular-automata/species-simulator.php'>Species Simulator</a>"],
+                "phone-other-automata" : ["<a href='/en/other-cellular-automata/particle-life.php'>Particle Life</a>"],
+                "phone-differential-equations" : ["<a href='/en/differential-equations/'>Basic Differential Equations</a>", "<a href='/en/differential-equations/lotka-volterra.php'>Lotka-Volterra</a>"],
+                "phone-macroevolution" : ["<a href='/en/macroevolution/newick-tree-parser.php'>Newick Tree Parser</a>", "<a href='/en/macroevolution/tree-fossil-generator.php'>Tree and Fossil Data Generator</a>"],
+                "base" : ["<a href='index.php'>Home</a>", "Cellular Automata", "Other Automata", "Differential Equations", "Macroevolution"]
+            };
+
+            function addPhoneButton(text) {
+                const newItem = document.createElement('li');
+                newItem.innerHTML = text;
+                newItem.classList.add("phone-list-item");
+                itemsList.appendChild(newItem);
+                setTimeout(() => {
+                    newItem.classList.add('show');
+                }, 10);
+            }
+
+            function phoneButtonClick() {
+                let passed = false;
+                itemsList.querySelectorAll(".phone-list-item").forEach((item) => {
+                    if (this.innerHTML != item.innerHTML) {
+                        item.classList.remove('show');
+                        if (!passed) {item.classList.add("shrink");}
+                        setTimeout(() => {
+                            item.remove();
+                        }, 400);
+                    } else {
+                        passed = true;
+                        item.innerHTML = "← &nbsp; &nbsp; <b>" + item.innerHTML + "</b>";
+                        item.onclick = phoneBackClick;
+                    }
+                });
+                setTimeout(() => {
+                    phoneCatalog[this.id].forEach((item) => {
+                        addPhoneButton(item);
+                    });
+                }, 400);
+                
+            }
+
+            function phoneBackClick() {
+                itemsList.querySelectorAll(".phone-list-item").forEach((item) => {
+                    item.classList.remove('show');
+                    setTimeout(() => {
+                        item.remove();
+                    }, 400);
+                });
+
+                itemsList = document.querySelector('.phone-list');
+
+                setTimeout(() => {
+                    let _i = 0;
+                    phoneCatalog["base"].forEach((item) => {
+                        addPhoneButton(item);
+                        console.log(itemsList.children);
+                        if (_i == 1) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-cellular-automata';
+                        }
+                        if (_i == 2) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-other-automata';
+                        }
+                        if (_i == 3) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-differential-equations';
+                        }
+                        if (_i == 4) {
+                            itemsList.children[itemsList.children.length - 1].id = 'phone-macroevolution';
+                        }
+                        _i++;
+
+                        if (phoneCatalog[itemsList.children[itemsList.children.length - 1].id]) {itemsList.children[itemsList.children.length - 1].onclick = phoneButtonClick;};
+                    });
+                }, 400);
+            }
+
+            itemsList.querySelectorAll(".phone-list-item").forEach((item) => {
+                if (phoneCatalog[item.id]) {item.onclick = phoneButtonClick};
+            });
+
+        </script>
     </li>
     </ul>
-    
-    <script>
-    function resizeTaskBar() {
-        var phone = window.innerWidth < 1100;
-        var phone_menu = document.getElementsByClassName("phone-menu")[0];
-        var desktop_menu = document.getElementsByClassName("dropdown");
-        if (phone) {
-            phone_menu.style.display = "initial";
-            for (let i = 0; i < desktop_menu.length; i++) {
-                desktop_menu[i].style.display = "none";
-            }
-        }
-        else {
-            phone_menu.style.display = "none";
-            for (let i = 0; i < desktop_menu.length; i++) {
-                desktop_menu[i].style.display = "initial";
-            }
-        }
-    }
-    
-    resizeTaskBar();
-    addEventListener("resize", (event) => {resizeTaskBar()});
-    </script>
 </header>
 <main id = 'Evolutionary Simulator'>
 <div class='article'>
