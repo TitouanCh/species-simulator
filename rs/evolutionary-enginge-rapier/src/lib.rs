@@ -4,6 +4,7 @@ use rapier2d::prelude::*;
 
 mod punk;
 use punk::punk_object::*;
+use punk::punk_organism::*;
 use punk::punk_system::*;
 
 use wasm_bindgen::prelude::*;
@@ -48,6 +49,10 @@ impl PunkContext {
 
     pub fn base_simulation(&mut self, system_index : usize, simulation_width : f32, simulation_height : f32) {
         self.systems[system_index].base_simulation(vector![simulation_width, simulation_height]);
+    }
+
+    pub fn organism_simulation(&mut self, system_index : usize, simulation_width : f32, simulation_height : f32) {
+        self.systems[system_index].organism_simulation(vector![simulation_width, simulation_height]);
     }
 
     pub fn process_system(&mut self, system_index : usize, delta : f32, epsilon : i32) {

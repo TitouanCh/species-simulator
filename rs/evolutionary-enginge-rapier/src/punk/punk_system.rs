@@ -12,6 +12,7 @@ use rapier2d::pipeline::{PhysicsHooks, PhysicsPipeline, QueryPipeline};
 use rapier2d::prelude::*;
 
 use crate::PunkObject;
+use crate::PunkOrganism;
 
 pub struct PunkSystem {
     pub islands: IslandManager,
@@ -29,6 +30,7 @@ pub struct PunkSystem {
     pub hooks: Box<dyn PhysicsHooks>,
 
     pub punk_objects: Vec<PunkObject>,
+    pub punk_organisms: Vec<PunkOrganism>,
 
     pub record: Vec<Vec<Vec<Vec<f32>>>>
     
@@ -54,6 +56,7 @@ impl PunkSystem {
             //event_handler: eve,
 
             punk_objects: Vec::new(),
+            punk_organisms: Vec::new(),
 
             record: Vec::new()
         }
@@ -75,6 +78,13 @@ impl PunkSystem {
         let object = PunkObject::new(position, mass, body_handle);
 
         self.punk_objects.push(object);
+    }
+
+    pub fn add_punk_organism(&mut self, position : Vector<Real>, dna : Vec<i16>) {
+        let mut organism = PunkOrganism::new(dna);
+        organism.setup(self, position);
+
+        self.punk_organisms.push(organism);
     }
 
     pub fn add_wall(&mut self, position : Vector<Real>, dimensions : Vector<Real>) {
@@ -173,6 +183,29 @@ impl PunkSystem {
             let y = y * simulation_dimensions.y;
 
             self.add_punk_object(vector![x, y], 20.0);
+        }
+
+        self.process(200.0, 6);
+    }
+
+    pub fn organism_simulation(&mut self, simulation_dimensions: Vector<Real>) {
+        // Walls
+        self.add_wall(vector![0.0, simulation_dimensions.y], vector![simulation_dimensions.x, 40.0]);
+
+        // Organisms
+        let mut rng = rand::thread_rng();
+        for _i in 1..10 {
+            let (x, y) : (f32, f32) = rng.gen();
+            let x = x * simulation_dimensions.x;
+            let y = y * simulation_dimensions.y;
+
+            let mut dna = Vec::new();
+            for _j in 1..48 {
+                let i : i16 = rng.gen();
+                dna.push(i);
+            }
+
+            self.add_punk_organism(vector![x, y], dna);
         }
 
         self.process(200.0, 6);

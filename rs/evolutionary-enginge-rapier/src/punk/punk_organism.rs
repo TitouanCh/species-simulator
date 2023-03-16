@@ -11,45 +11,111 @@ use crate::PunkSystem;
 
 //#[derive(Copy, Clone)]
 pub struct PunkOrganism {
-    pub dna : Vec<i16>
+    pub dna : Vec<i16>,
+    pub objectIdx : Vec<usize>
 }
 
 impl PunkOrganism {
     pub fn new(dna: Vec<i16>) -> Self {
         Self {
-            dna
+            dna,
+            objectIdx : Vec::new()
         }
     }
 
-    pub fn make(self, system : &mut PunkSystem) {
+    fn read(&mut self) -> PunkEmbryo {
+        let MAX_SIZE = 32;
+        let MAX_MASS = 16; 
+
+        let mut dnaMol = Vec::new(); 
+
         let mut i = 0;
-        let dna_size : i16 = self.dna.len().try_into().unwrap();
         
+        // Molecule
         while i < self.dna.len() {
-            let i_16 : i16 = i.try_into().unwrap();
-            let u_dna : usize = usize::from(i);
-
-            // Static - 1: position_x, 2: position_y 3: mass
-            if self.dna[i] == 0 && i + 2 < self.dna.len() {
-                system.add_punk_object(
-                    vector![self.dna[i + 1].into(), self.dna[i + 2].into()],
-                    self.dna[i + 3].into()
-                );
-                i += 3;
-            
-            // Joint - 1: 13: length_x, 4: length_y
-            } else if self.dna[i] == 1 && i > 3 && i + 3 < self.dna.len() {
-                if self.dna[i + 1] < i_16 && self.dna[i + 2] < i_16 {
-                    system.add_joint(
-                        self.dna[i + 1] as usize,
-                        self.dna[i + 2] as usize,
-                        point![self.dna[i + 3].into(), self.dna[i + 4].into()]
-                    );
+            // Symetries
+            let mut symetries = Vec::new();
+            let mut j = i;
+            while j < self.dna.len() {
+                if self.dna[j] % 2 == 1 {
+                    symetries.push(self.dna[i + j + 1] as f32);
+                    j += 2;
+                } else {
+                    break;
                 }
-                i += 4;
-            } else {
-                i += 1;
             }
+
+            // Insert Molecule
+            let x : f32 = (self.dna[i + j + 1] % MAX_SIZE * 10) as f32 / 10.0;
+            let y : f32 = (self.dna[i + j + 2] % MAX_SIZE * 10) as f32 / 10.0;
+
+            let mass : f32 = (self.dna[i + j + 3] % (MAX_MASS * 10)) as f32 / 10.0;
+
+            dnaMol.push(PunkMol {position : vector![x, y], mass : mass, symetries : symetries});
+
+            i += 3 + j;
+        }
+
+        // Embryo
+        let mut embryos : Vec<PunkEmbryo> = Vec::new();
+        let mut embryo = PunkEmbryo { position : vector![0.0, 0.0], children : Vec::new(), mass : 10.0 };
+
+        for mol in dnaMol.iter().rev() {
+            let mut children : Vec<PunkEmbryo> = Vec::new();
+            children.push(embryos[embryos.len() - 1].clone());
+
+            for sym in mol.symetries.iter() {
+                let mut tilted = embryos[embryos.len() - 1].clone();
+                let angle = *sym;
+                tilted.position = vector![mol.position.x * angle.cos() - mol.position.y * angle.sin(), mol.position.x * angle.sin() + mol.position.y * angle.cos()];
+                children.push(tilted);
+            }
+
+            embryo = PunkEmbryo { position : mol.position, mass : mol.mass as f32, children : children };
+            embryos.push(embryo);
+        }
+
+        embryos[embryos.len() - 1].clone()
+    }
+
+    fn make(&mut self, system : &mut PunkSystem, position : Vector<Real>, embryo : PunkEmbryo) {
+
+        // Create all children
+        let mut childrenIdx = Vec::new();
+
+        for child in embryo.children.iter() {
+            self.make(system, position + embryo.position, child.clone());
+            childrenIdx.push(system.punk_objects.len() - 1);
+        }
+
+        // Add itself
+        system.add_punk_object(embryo.position + position, embryo.mass);
+        let selfIdx = system.punk_objects.len() - 1;
+
+        self.objectIdx.push(selfIdx);
+
+        // Connect to all children
+        for (i, child) in embryo.children.iter().enumerate() {
+            system.add_joint(selfIdx, childrenIdx[i], child.position.into());
         }
     }
+
+    pub fn setup(&mut self, system : &mut PunkSystem, position : Vector<Real>) {
+        let embryo = self.read();
+        self.make(system, position, embryo);
+    }
+
+}
+
+pub struct PunkMol {
+    pub position : Vector<Real>,
+    pub mass : f32,
+    pub symetries : Vec<f32>
+}
+
+#[derive(Clone)]
+pub struct PunkEmbryo {
+    pub position : Vector<Real>,
+    pub mass : f32,
+    pub children : Vec<PunkEmbryo> 
 }
