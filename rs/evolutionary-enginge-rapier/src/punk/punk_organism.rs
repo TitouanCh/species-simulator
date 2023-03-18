@@ -26,6 +26,7 @@ impl PunkOrganism {
     fn read(&mut self) -> PunkEmbryo {
         let MAX_SIZE = 32;
         let MAX_MASS = 16; 
+        let MAX_ANGLE = 6.2831;
 
         let mut dnaMol = Vec::new(); 
 
@@ -35,27 +36,34 @@ impl PunkOrganism {
         while i < self.dna.len() {
             // Symetries
             let mut symetries = Vec::new();
-            let mut j = i;
-            while j < self.dna.len() {
-                if self.dna[j] % 2 == 1 {
-                    symetries.push(self.dna[i + j + 1] as f32);
-                    j += 2;
+
+            while i < self.dna.len() {
+                if self.dna[i] % 2 == 1 {
+                    symetries.push((self.dna[i + 1] as f32 % MAX_ANGLE).abs());
+                    i += 2;
                 } else {
                     break;
                 }
             }
 
             // Insert Molecule
-            let x : f32 = (self.dna[i + j + 1] % MAX_SIZE * 10) as f32 / 10.0;
-            let y : f32 = (self.dna[i + j + 2] % MAX_SIZE * 10) as f32 / 10.0;
+            if i < self.dna.len() - 3 {
+                let x : f32 = (self.dna[i + 1] % (MAX_SIZE * 10)) as f32 / 10.0;
+                let y : f32 = (self.dna[i + 2] % (MAX_SIZE * 10)) as f32 / 10.0;
 
-            let mass : f32 = (self.dna[i + j + 3] % (MAX_MASS * 10)) as f32 / 10.0;
+                let mass : f32 = (self.dna[i + 3] % (MAX_MASS * 10)) as f32 / 10.0;
+                let mass = mass.abs();
 
-            dnaMol.push(PunkMol {position : vector![x, y], mass : mass, symetries : symetries});
-            //println!("dna mol : {:?}", dnaMol);
+                let mol = PunkMol {position : vector![x, y], mass : mass, symetries : symetries};
+                println!("dna mol -> | position ({} {}), mass ({}), symetries ({:?})", mol.position.x, mol.position.y, mol.mass, mol.symetries);
+                
+                dnaMol.push(mol);
+            }
 
-            i += 3 + j;
+            i += 3;
         }
+
+        println!("dna len : {:?}", dnaMol.len());
 
         // Embryo
         let mut embryos : Vec<PunkEmbryo> = Vec::new();
@@ -63,24 +71,30 @@ impl PunkOrganism {
 
         for mol in dnaMol.iter().rev() {
             let mut children : Vec<PunkEmbryo> = Vec::new();
-            children.push(embryos[embryos.len() - 1].clone());
+            if embryos.len() > 0 {
+                children.push(embryos[embryos.len() - 1].clone());
 
-            for sym in mol.symetries.iter() {
-                let mut tilted = embryos[embryos.len() - 1].clone();
-                let angle = *sym;
-                tilted.position = vector![mol.position.x * angle.cos() - mol.position.y * angle.sin(), mol.position.x * angle.sin() + mol.position.y * angle.cos()];
-                children.push(tilted);
+                for sym in mol.symetries.iter() {
+                    let mut tilted = embryos[embryos.len() - 1].clone();
+                    let angle = *sym;
+                    tilted.position = vector![mol.position.x * angle.cos() - mol.position.y * angle.sin(), mol.position.x * angle.sin() + mol.position.y * angle.cos()];
+                    children.push(tilted);
+                }
             }
 
             embryo = PunkEmbryo { position : mol.position, mass : mol.mass as f32, children : children };
-            //println!("dna mol : {:?}", embryo);
+            println!("embryo : {:?}, nchildren : {}", embryo.position, embryo.children.len());
             embryos.push(embryo);
         }
+
+        println!("--- Embryo Structure DONE!");
 
         embryos[embryos.len() - 1].clone()
     }
 
     fn make(&mut self, system : &mut PunkSystem, position : Vector<Real>, embryo : PunkEmbryo) {
+
+        println!("-o- Making Embryo - info / {:?}, nchildren : {} ;", embryo.position, embryo.children.len());
 
         // Create all children
         let mut childrenIdx = Vec::new();

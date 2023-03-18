@@ -194,7 +194,7 @@ impl PunkSystem {
 
         // Organisms
         let mut rng = rand::thread_rng();
-        for _i in 1..10 {
+        for _i in 0..1 {
             let (x, y) : (f32, f32) = rng.gen();
             let x = x * simulation_dimensions.x;
             let y = y * simulation_dimensions.y;
