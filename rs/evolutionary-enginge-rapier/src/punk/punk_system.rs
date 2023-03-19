@@ -50,7 +50,7 @@ impl PunkSystem {
             pipeline: PhysicsPipeline::new(),
             query_pipeline: QueryPipeline::new(),
             integration_parameters: IntegrationParameters::default(),
-            gravity: Vector::y() * 9.81,
+            gravity: Vector::y() * 0.0,
             hooks: Box::new(()),
 
             //event_handler: eve,
@@ -65,7 +65,7 @@ impl PunkSystem {
     pub fn add_punk_object(&mut self, position : Vector<Real>, mass : f32) {
         let collider = ColliderBuilder::ball(mass)
             .mass(mass)
-            .restitution(0.5)
+            .restitution(0.2)
             .build();
         
         let rigid_body = RigidBodyBuilder::dynamic()
@@ -102,7 +102,9 @@ impl PunkSystem {
     pub fn add_joint(&mut self, idx1 : usize, idx2 : usize, joint_point : Point<Real>) {
         let joint = RevoluteJointBuilder::new()
             .local_anchor1(point![0.0, 0.0])
-            .local_anchor2(joint_point);
+            .local_anchor2(joint_point)
+            .contacts_enabled(false)
+            .motor_velocity(0.0, 0.0);
         
         self.impulse_joints.insert(self.punk_objects[idx1].handle, self.punk_objects[idx2].handle, joint, true);
     }

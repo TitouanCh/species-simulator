@@ -1,5 +1,6 @@
 use std::vec::Vec;
 use rapier2d::math::{Real, Vector};
+use nalgebra::distance;
 
 use rapier2d::prelude::*;
 
@@ -24,8 +25,8 @@ impl PunkOrganism {
     }
 
     fn read(&mut self) -> PunkEmbryo {
-        let MAX_SIZE = 32;
-        let MAX_MASS = 16; 
+        let MAX_SIZE = 16;
+        let MAX_MASS = 6; 
         let MAX_ANGLE = 6.2831;
 
         let mut dnaMol = Vec::new(); 
@@ -92,16 +93,28 @@ impl PunkOrganism {
         embryos[embryos.len() - 1].clone()
     }
 
-    fn make(&mut self, system : &mut PunkSystem, position : Vector<Real>, embryo : PunkEmbryo) {
+    fn make(&mut self, system : &mut PunkSystem, position : Vector<Real>, embryo : &PunkEmbryo, validated_mol_list : &Vec<PunkMol>) -> bool {
+
+        // Check if valid
+        let mut valid = false;
+        for mol in validated_mol_list {
+            if mol.mass == embryo.mass && mol.position == embryo.position {
+                valid = true;
+            }
+        }
+        if !valid { return false; }
 
         println!("-o- Making Embryo - info / {:?}, nchildren : {} ;", embryo.position, embryo.children.len());
 
         // Create all children
         let mut childrenIdx = Vec::new();
+        let mut real_childrenIdx = Vec::new();
 
-        for child in embryo.children.iter() {
-            self.make(system, position + embryo.position, child.clone());
-            childrenIdx.push(system.punk_objects.len() - 1);
+        for (i, child) in embryo.children.iter().enumerate() {
+            if self.make(system, position + embryo.position, &child, validated_mol_list) {
+                childrenIdx.push(system.punk_objects.len() - 1);
+                real_childrenIdx.push(i);
+            }
         }
 
         // Add itself
@@ -111,19 +124,53 @@ impl PunkOrganism {
         self.objectIdx.push(selfIdx);
 
         // Connect to all children
-        for (i, child) in embryo.children.iter().enumerate() {
-            system.add_joint(selfIdx, childrenIdx[i], child.position.into());
+        for (i, j) in real_childrenIdx.iter().enumerate() {
+            //system.add_joint(selfIdx, childrenIdx[i], embryo.children[*j].position.into());
         }
+
+        true
     }
 
     pub fn setup(&mut self, system : &mut PunkSystem, position : Vector<Real>) {
         let embryo = self.read();
-        self.make(system, position, embryo);
+        let validated_mol_list = self.validate(&embryo, Vec::new());
+        self.make(system, position, &embryo, &validated_mol_list);
+    }
+
+    fn validate(&mut self, embryo : &PunkEmbryo, mut validated_mol_list : Vec<PunkMol>) -> Vec<PunkMol> {
+        
+        println!("-v- Validating Embryo - info / {:?}, nchildren : {} ;", embryo.position, embryo.children.len());
+
+        let mut is_colliding = false;
+
+        // Check if embryo part collides with anything
+        for mol in &validated_mol_list {
+            let point1 : Point<Real> = mol.position.into();
+            let point2 : Point<Real> = embryo.position.into();
+
+            // -> if it does, do not validate
+            if distance(&point2, &point1) < mol.mass + embryo.mass {
+                is_colliding = true;
+                break;
+            }
+        }
+
+        // -> if it doesn't validate it and check children
+        if !is_colliding {
+            let validated_mol = PunkMol { position : embryo.position, mass : embryo.mass, symetries : Vec::new()};
+            validated_mol_list.push(validated_mol);
+
+            for child in embryo.children.iter() {
+                validated_mol_list = self.validate(&child, validated_mol_list);
+            }
+        }
+
+        validated_mol_list
     }
 
 }
 
-//#[derive(Debug)]
+#[derive(Clone)]
 pub struct PunkMol {
     pub position : Vector<Real>,
     pub mass : f32,
