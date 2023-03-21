@@ -37,6 +37,7 @@ def generate_titlebar(data):
             "<div id='" + data["title"]  +"' class='simulation_title'>",
             "<h1>" + data["title"] + "</h1>",
             "<h2>" + data["title"] + " - Species-Simulator.com</h2>",
+            "<div id='" + data["title"] + "-short-description' class='short_description'>" + data["short_desc"] + "</div>"
             "</div>"
             ]
     return arr
@@ -48,7 +49,7 @@ def generate_simulationcanvas(data):
     if data["type"] == "article": return []
     arr = [
             "<div id='" + data["title"] + " online simulator' class='online_simulator' style='text-align: center;'>",
-            "<canvas id='" + data["title"] + " simulation' class='simulation_canvas'  width = '900' height='1525'>",
+            "<canvas id='" + data["title"] + " simulation' class='simulation_canvas'  width = '900' height='1525'></canvas>",
             "</div>"
             ]
     return arr
