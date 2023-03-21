@@ -5,8 +5,8 @@
 ### Particle Life
 
 1. Performance improvent with javascript version ✅
-2. Article update 
-3. Image update
+2. Article update ✅
+3. Image update ✅
 4. Upload and redirect
 
 <br>
@@ -42,8 +42,11 @@
 
 ### Other
 
-1. Navbar update
-2. Architecture update
+- Navbar update ✅
+- Page generation update
+- Architecture update
+- New logo ✅
+- New footer
 
 <br>
 

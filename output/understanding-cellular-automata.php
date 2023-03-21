@@ -127,7 +127,7 @@
                     let _i = 0;
                     phoneCatalog["base"].forEach((item) => {
                         addPhoneButton(item);
-                        console.log(itemsList.children);
+
                         if (_i == 1) {
                             itemsList.children[itemsList.children.length - 1].id = 'phone-cellular-automata';
                         }
@@ -160,7 +160,7 @@
 <div id='Understanding Cellular Automatas' class='simulation_title'>
 <h1>Understanding Cellular Automatas</h1>
 <h2>Understanding Cellular Automatas - Species-Simulator.com</h2>
-</div>
+<div id='Understanding Cellular Automatas-short-description' class='short_description'>Usually represented in the form of a grid with flickering lights, cellular automata evolve over time using habitually very simple rules. Yet, they can somehow produce extremely complex behaviors...</div></div>
 <p>
 A cellular automaton is a mathematical system that can be represented in the form of a table. 
 The cells in the table typically only have two possible state : on or off corresponding to : alive or dead.

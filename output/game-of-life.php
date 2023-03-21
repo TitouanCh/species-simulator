@@ -127,7 +127,7 @@
                     let _i = 0;
                     phoneCatalog["base"].forEach((item) => {
                         addPhoneButton(item);
-                        console.log(itemsList.children);
+
                         if (_i == 1) {
                             itemsList.children[itemsList.children.length - 1].id = 'phone-cellular-automata';
                         }
@@ -160,9 +160,9 @@
 <div id='Game of Life' class='simulation_title'>
 <h1>Game of Life</h1>
 <h2>Game of Life - Species-Simulator.com</h2>
-</div>
+<div id='Game of Life-short-description' class='short_description'>Discover the Game of Life from the famous mathematician John Conway. A cellular automaton in your browser...</div></div>
 <div id='Game of Life online simulator' class='online_simulator' style='text-align: center;'>
-<canvas id='Game of Life simulation' class='simulation_canvas'  width = '900' height='1525'>
+<canvas id='Game of Life simulation' class='simulation_canvas'  width = '900' height='1525'></canvas>
 </div>
 <div id='Species Simulator parameters' class='simulation_parameters' style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px;">
 

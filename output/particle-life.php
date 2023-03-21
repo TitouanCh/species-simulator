@@ -127,7 +127,7 @@
                     let _i = 0;
                     phoneCatalog["base"].forEach((item) => {
                         addPhoneButton(item);
-                        console.log(itemsList.children);
+
                         if (_i == 1) {
                             itemsList.children[itemsList.children.length - 1].id = 'phone-cellular-automata';
                         }
@@ -160,9 +160,9 @@
 <div id='Particle Life' class='simulation_title'>
 <h1>Particle Life</h1>
 <h2>Particle Life - Species-Simulator.com</h2>
-</div>
+<div id='Particle Life-short-description' class='short_description'>Each color or species interacts in a random way with other species. Particles can attract or repel each other leading to fun results. Try restarting the simulation multiple times until you find something interesting.</div></div>
 <div id='Particle Life online simulator' class='online_simulator' style='text-align: center;'>
-<canvas id='Particle Life simulation' class='simulation_canvas'  width = '900' height='1525'>
+<canvas id='Particle Life simulation' class='simulation_canvas'  width = '900' height='1525'></canvas>
 </div>
 <div id='Species Simulator parameters' class='simulation_parameters' style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px;">
 
@@ -172,13 +172,8 @@
 <label for="enviroHeight">Enviro Height :</label>
 <input type="number" id="enviroHeight" name="enviroHeight" value="800" min="10" max="10000">
 
-<script id="simpleSizer">
-var sizerWidth = document.getElementById('content').clientWidth;
-document.getElementById("enviroWidth").value = sizerWidth/1.5;
-</script>
-
 </br>
-<label for="pause">Pause : </label>
+<label for="pause">Pause: </label>
 <input id="pause" type="checkbox"/>
 
 </br>
@@ -187,114 +182,153 @@ document.getElementById("enviroWidth").value = sizerWidth/1.5;
 
 </br>
 
-<label for="fpsLimit">Image per second limit :</label>
+<label for="fpsLimit">Image per second limit:</label>
 <input id="fpsLimit" type="number" name="fpsLimit" value="120" min="1" max="2000">
 
 </br>
 
-<label for="nbEspece">Number of different species :</label>
+<label for="nbEspece">Number of different species:</label>
 <input type="number" id="nbEspece" name="nbEspece" value="6" min="1" max="8">
 
 </br>
 
-<label for="nbIndividus">Number of individuals :</label>
+<label for="nbIndividus">Number of individuals:</label>
 <input type="number" id="nbIndividus" name="nbIndividus" value="200" min="1" max="1000">
 
 </br>
 
-<label for="G">G :</label>
+<label for="G">G:</label>
 <input type="number" id="G" name="G" value="0.0981" min="0" max="10">
 
 ||
 
-<label for="drag">1/Friction :</label>
+<label for="trail">Trail Modifier:</label>
+<input type="number" id="trail" name="trail" value="0.3" min="0" max="1">
+
+||
+
+<label for="drag">1/Friction:</label>
 <input type="number" id="drag" name="drag" value="0.98" min="0" max="1">
 
+<br>
+
+<label for="norme">Norm:</label>
+<select name="norme" id="norme">
+    <option value="norme2">Euclian</option>
+    <option value="norme1">Absolute</option>
+    <option value="max">max</option>
+    <option value="exponential">exponential</option>
+    <option value="weird">Weird</option>
+</select>
+
+
+</br>
+</br>
+<b>Performance --</b> <br>
+
+<label for="partitioning">Space Partitioning: </label>
+<input id="partitioning" type="checkbox" checked="true"/>
+
+<label for="multithreading">Multithreading: </label>
+<input id="multithreading" type="checkbox" checked="true"/>
+
 </div>
-<h2>What is particle life?</h2>
+<div id="particle-life-description" class='simulation_description'>
 
-<p>
-    Particle life is a simulation that depicts life-like behavior arising from particles following a set of simple rules.
-</p>
+    <h2>What is particle life?</h2>
+
+    <p>
+        Particle life is a simulation that depicts life-like behavior arising from particles following a set of simple rules. Inspired by Clusters from Jeffrey Ventrella, we can observe in this simulation emergent behaviors reminding us of micro-organisms...
+    </p>
+        
+    <h2>What are the rules of particle life?</h2>
     
-<h2>What are the rules of particle life?</h2>
+    <p>
+        Particle life is made up of many particles. You can see them flying around above. Each particle has the ability to either attract or repel other particles.
+    </p>
+    
+    <p>
+        How particles interact, if they repel or attract each other, is dependent on their color.
+    </p>
+    
+    <p>
+        At the start of the simulation, particles are randomly assigned a color, which represents their species. Next, each possible pair of colors (order matters) is assigned a random number. This random number will determine the nature of the interaction between the two colors: a negative number indicates an attractive force, while a positive number represents a repulsive force.
+    </p>
+    
+    <table style ="max-width: 600px;">
+        <tbody>
+            <tr>
+                <td style="background: lightgrey; width: 25%;"></td>
+                <td style="background: #315465; color: white; font-weight: bold; width: 25%;">Blue</td>
+                <td style="background: #597d64; color: white; font-weight: bold; width: 25%;">Green</td>
+                <td style="background: #e8094a; color: white; font-weight: bold; width: 25%;">Red</td>
+            </tr>
+            <tr>
+                <td style="background: #315465; color: white; font-weight: bold;">Blue</td>
+                <td style="background: lightgrey;"></td>
+                <td>1.8</td>
+                <td>-5.2</td>
+            </tr>
+            <tr>
+                <td style="background: #597d64; color: white; font-weight: bold;">Green</td>
+                <td>-4.3</td>
+                <td style="background: lightgrey;"></td>
+                <td>0.7</td>
+            </tr>
+            <tr>
+                <td style="background: #e8094a; color: white; font-weight: bold;">Red</td>
+                <td>-3.2</td>
+                <td>7.3</td>
+                <td style="background: lightgrey;"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div id="particle-life-table-caption" class="caption">Table with possible values</div>
+    
+    <p>
+        Interactions don't have to be symmetrical. For example, in the table above: blue attracts green but green repels blue, this can result in an interesting glider effect.
+    </p>
+    
+    <canvas id='Particle-Life-glider' class='glider_canvas' width=300 height=150></canvas>
+    
+    <div id="particle-life-table-caption" class="caption">Particle Life "Glider"</div>
+    
+    <p>
+        The strength of particle interactions diminishes based on the distance between two particles. This distance is determined using a selected norm. Additionally, if two particles get too close, a strong repelling force is applied to prevent them from passing through each other.
+    </p>
+    
+    <p>
+        All these interactions can lead to endless energy creation in our simulation. We counteract this by adding a strong friction force to all particles, which prevents them from continuously accelerating.
+    </p>
+    
+    <p>
+        That's all there really is to it, still, even with those simple rules we can get some fun results.
+    </p>
+    
+    <h2>
+        How is it made?
+    </h2>
+    
+    <p>
+        My version of <b>particle life</b> is built using JavaScript entirely.
+    </p>
+    
+    <p>
+        However, due to the O(n²) complexity of each step in the simulation, as calculating the next position of each particle requires determining the resulting force from each other particle acting on it, we need to employ two methods to optimize the simulation.
+    </p>
+    
+    <ul>
+        <li>The first method is space partitioning, where we divide the simulation space into partitions. For each particle, we only need to calculate the interaction with particles from its partition and neighboring partitions.</li>
+        <li>The second method is multithreading which is built on top of space partitioning. We can assign different partitions to different threads. The performance benefit of this method varies because serializing the data and sending it to the threads each frame proves to be quite expensive.</li>
+    </ul>
 
-<p>
-    Particle life is made up of many particles. You can see them flying around above. Each particle has the ability to either attract or repel other particles.
-</p>
-
-<p>
-    How particles interact, if they repel or attract each other, is dependent on their color.
-</p>
-
-<p>
-    At the start of the simulation, particles are randomly assigned a color, which represents their species. Next, each possible pair of colors (order matters) is assigned a random number. This random number will determine the nature of the interaction between the two colors: a negative number indicates an attractive force, while a positive number represents a repulsive force.
-</p>
-
-<table>
-    <tbody>
-        <tr>
-            <td>--/--</td>
-            <td>Blue</td>
-            <td>Green</td>
-            <td>Red</td>
-        </tr>
-        <tr>
-            <td>Blue</td>
-            <td>--/--</td>
-            <td>1.8</td>
-            <td>-5.2</td>
-        </tr>
-        <tr>
-            <td>Green</td>
-            <td>-4.3</td>
-            <td>--/--</td>
-            <td>0.7</td>
-        </tr>
-        <tr>
-            <td>Red</td>
-            <td>-3.2</td>
-            <td>7.3</td>
-            <td>--/--</td>
-        </tr>
-    </tbody>
-</table>
-
-<p>
-    Interactions don't have to be symmetrical. For example, in the table above: blue attracts green but green repels blue, this can result in an interesting glider effect.
-</p>
-
-<p>
-    The strength of particle interactions diminishes based on the distance between two particles. This distance is determined using a selected norm. Additionally, if two particles get too close, a strong repelling force is applied to prevent them from passing through each other.
-</p>
-
-<p>
-    All these interactions can lead to endless energy creation in our simulation. We counteract this by adding a strong friction force to all particles, which prevents them from continuously accelerating.
-</p>
-
-<p>
-    That's all there really is to it, still, even with those simple rules we can get some fun results.
-</p>
-
-<h2>
-    How is it made?
-</h2>
-
-<p>
-    Particle life is built using JavaScript entirely.
-</p>
-
-<p>
-    However, due to the O(n²) complexity of each step in the simulation, as calculating the next position of each particle requires determining the resulting force from each other particle acting on it, we need to employ two methods to optimize the simulation.
-</p>
-
-<ul>
-    <li>The first method is space partitioning, where we divide the simulation space into partitions. For each particle, we only need to calculate the interaction with particles from its partition and neighboring partitions.</li>
-    <li>The second method is multithreading which is built on top of space partitioning. We can assign different partitions to different threads. The performance benefit of this method varies because serializing the data and sending it to the threads each frame proves to be quite expensive.</li>
-</ul>
+</div>
 <script src=./scripts/utils.js></script>
 <script src=./scripts/Ssimulation.js></script>
-<script src=./scripts/particle-life/particleLife-App.js></script>
+<script src=./scripts/particle-life/particle_point.js></script>
+<script src=./scripts/particle-life/particle_life.js></script>
+<script src=./scripts/particle-life/glider.js></script>
 </div>
 </main>
 </body>

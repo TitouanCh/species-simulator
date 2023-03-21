@@ -127,7 +127,7 @@
                     let _i = 0;
                     phoneCatalog["base"].forEach((item) => {
                         addPhoneButton(item);
-                        console.log(itemsList.children);
+
                         if (_i == 1) {
                             itemsList.children[itemsList.children.length - 1].id = 'phone-cellular-automata';
                         }
@@ -160,9 +160,9 @@
 <div id='Evolutionary Simulator' class='simulation_title'>
 <h1>Evolutionary Simulator</h1>
 <h2>Evolutionary Simulator - Species-Simulator.com</h2>
-</div>
+<div id='Evolutionary Simulator-short-description' class='short_description'>lel</div></div>
 <div id='Evolutionary Simulator online simulator' class='online_simulator' style='text-align: center;'>
-<canvas id='Evolutionary Simulator simulation' class='simulation_canvas'  width = '900' height='1525'>
+<canvas id='Evolutionary Simulator simulation' class='simulation_canvas'  width = '900' height='1525'></canvas>
 </div>
 <div id='Species Simulator parameters' class='simulation_parameters' style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px;">
 
