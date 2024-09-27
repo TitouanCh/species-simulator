@@ -24,5 +24,12 @@
                 <a href="/igem.php"><li>iGEM</li></a>
             </ul>
         </li>
+        <li>
+            <div class="year">2023</div>
+            <ul class="links">
+                <a href="/polytopia.php"><li>Multiplayer strategy game built with Godot, Rust & Tokio</li></a>
+                <a href="/synthetic-data-artificial-genomes.php"><li>Synthetic data & Artificial genomes</li></a>
+            </ul>
+        </li>
     </ul>
 </div>
