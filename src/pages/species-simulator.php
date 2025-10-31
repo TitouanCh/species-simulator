@@ -1,17 +1,6 @@
-<html lang="en">
-        <head>
-            <title>Species simulator</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta name="Description" content="A simulator capable of simulating species free online, interactions between invasives and endemic species.">
-            <link rel="icon" type="image/png" href="/favicon.png"/> 
-            <link rel="stylesheet" href="style.css">
-            <?php include ("google-tag.php"); ?>
-        </head>
-        <body>
-<?php include ("site-header.php"); ?>
-<div id='content'>
 <div class="article">
     <h1>Species simulator</h1>
+    
     <p class="short-intro">
 <span style="color: #df8886; font-style: normal;">Winter 2020 ~ @TitouanCh</span><br>
 Species Simulator - Species-Simulator.com
@@ -105,7 +94,3 @@ An online stochastic species simulator, useful for studying interactions between
 
 <p>The implementation is simple, everything was written in javascript. I utilized workers to avoid browser hanging.</p>
 </div>
-<?php include ("site-side.php"); ?>
-</div>
-        </body>
-    </html>
