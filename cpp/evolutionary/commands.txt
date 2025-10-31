@@ -1,3 +1,0 @@
-emcc -I. -o C:\wamp64\www\species-simulator\scripts\evolutionary-simulator\punksystem.js -Oz -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=1 -s EXPORT_NAME=createModule --bind utilities.cpp organism.cpp system.cpp bindings.cpp
-
-g++ -o cli.exe utilities.cpp organism.cpp system.cpp cli.cpp
