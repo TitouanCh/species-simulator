@@ -90,8 +90,3 @@
     <script src="/scripts/differential/differential1.js"></script>
 
 </div>
-<?php include("site-side.php"); ?>
-</div>
-</body>
-
-</html>
