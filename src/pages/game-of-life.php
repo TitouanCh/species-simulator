@@ -1,5 +1,6 @@
 <div class="article">
     <h1>John Conway's Game of Life</h1>
+
     <p class="short-intro">
         <span style="color: #df8886; font-style: normal;">Summer 2020 ~ @TitouanCh</span><br>
         Discover the Game of Life from the famous mathematician John Conway. A cellular automaton in your
@@ -7,9 +8,11 @@
         The Game of Life is easily one of if not the most famous cellular automaton. Despite it's simple rules,
         it can generates some remarquables structures.
     </p>
+
     <div id='Game of Life online simulator' class='online_simulator' style='text-align: center;'>
         <canvas id='Game of Life simulation' class='simulation_canvas' width='900' height='1525'>
     </div>
+
     <div id='Species Simulator parameters' class='simulation_parameters'
         style="background-color: #333; color: white; padding: 20px; text-align: center; border-radius: 20px; margin-top: 18px;">
 
@@ -72,11 +75,12 @@
                     later in his life, he retracted many of these statements, expressing reconciliation with the
                     game and stating that he was quite proud of it.</p>
             </div>
-            <div class="image-div"><img src="./images/conway.jpeg" alt="Mathematician John Horton Conway">Mathematician
+            <div class="image-div"><img src="/assets/images/conway.jpeg"
+                    alt="Mathematician John Horton Conway">Mathematician
                 John Horton Conway</div>
         </div>
         <h2>Game of life and cellular automata</h1>
-            <div class="image-div"><img src="./images/conway_game_of_life.webp"
+            <div class="image-div"><img src="/assets/images/conway_game_of_life.webp"
                     alt="John Horton Conway playing the game of life on an old computer" height="300"><br>Conway
                 playing Game of Life on a computer in 1970</div>
             <p>The game of life is a cellular automaton. This means that the game is played on a grid of cells.
@@ -298,6 +302,6 @@ void main() {
     gl_FragColor = texture2D(u_texture, v_coord);
 }
 </script>
-<script src=./scripts/utils.js></script>
-<script src=./scripts/Ssimulation.js></script>
-<script src=./scripts/game-of-life/GoL.js></script>
+<script src=/assets/js/utils.js></script>
+<script src=/assets/js/Ssimulation.js></script>
+<script src=/assets/js/game-of-life/GoL.js></script>

@@ -2,7 +2,7 @@
     <h1>Particle life</h1>
     <p class="short-intro">
         <span style="color: #df8886; font-style: normal;">Winter 2021 ~ @TitouanCh</span><br>
-        Particle Life - Species-Simulator.com
+        Particle Life - titouan.ch
         Inspired by Clusters from Jeffrey Ventrella, we can observe in this simulation emergent behaviors reminding us
         of micro-organisms...
     </p>
@@ -85,10 +85,10 @@
         document.getElementById('enviroWidth').value = parseInt(document.getElementsByClassName("simulation_canvas")[0].parentElement.offsetWidth)
     </script>
 
-    <script src=./scripts/utils.js></script>
-    <script src=./scripts/Ssimulation.js></script>
-    <script src=./scripts/particle-life/particle_point></script>
-    <script src=./scripts/particle-life/particle_life></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/Ssimulation.js"></script>
+    <script src="/assets/js/particle-life/particle_point.js"></script>
+    <script src="/assets/js/particle-life/particle_life.js"></script>
 
     <h2>What is particle life?</h2>
 
@@ -138,7 +138,7 @@
         </tbody>
     </table>
 
-    <p>Interactions don’t have to be symmetrical. For example, in the table above: blue attracts green but green repels
+    <p>Interactions don't have to be symmetrical. For example, in the table above: blue attracts green but green repels
         blue, this can result in an interesting glider effect.</p>
 
     <canvas id='Particle-Life-glider' class='glider_canvas' width=300 height=150></canvas>
