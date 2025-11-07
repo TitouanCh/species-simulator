@@ -84,8 +84,8 @@
         abstract art. The graph’s colors evolve over time.
         </br>
         </br>
-        If the simulation is making your browser slow down, try lowering the number of points or pausing the Lotka
-        Volterra simulation.</br>
+        If the simulation is making your browser slow down, try lowering the number of points or pausing the
+        rendering.</br>
     </p>
 
     <h2 id="Two-types-of-Lotka-Volterra-models">Two types of Lotka Volterra models</h2>
@@ -94,7 +94,7 @@
         </br>
         The <b id="Lotka-Volterra-predator-prey-model">Lotka Volterra predator prey model</b>:</br>
         </br>
-        <img src="/img/differential-equations/lotka-volterra-predator-prey.png"
+        <img src="/assets/img/differential-equations/lotka-volterra-predator-prey.png"
             alt="Lotka-Volterra predator prey model equation"></br>
         Discovered first and the simpler version of the two, it's the model we chose to represent above in a vector
         field.</br> <br>
@@ -104,7 +104,7 @@
         </br>
         and the <b id="Lotka-Volterra-competition-model">Lotka Volterra competition model</b>:</br>
         </br>
-        <img src="/img/differential-equations/lotka-volterra-competition-model.png"
+        <img src="/assets/img/differential-equations/lotka-volterra-competition-model.png"
             alt="Lotka-Volterra competition model"></br>
         Similar to the predator-prey model, this model takes into account any N species and can simulate more diverse
         interactions (predator-prey, mutualism, etc...).</br> <br>
@@ -132,5 +132,5 @@ Want a detailled look at implementing the Lotka Volterra in python using numpy a
             likelyMobile = true;
         }
     </script>
-    <script src="/scripts/differential/differential2.js"></script>
+    <script src="/assets/js/differential/differential2.js"></script>
 </div>

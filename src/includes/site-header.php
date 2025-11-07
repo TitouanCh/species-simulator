@@ -5,7 +5,8 @@
         <li>
             <div class="phone-button" width="16" style="position: absolute; top: 16px; right: 16px;"
                 onclick="toggle_phone_menu()">
-                <object data="menu.svg" width="16" style="pointer-events: none; filter: invert(100%);"></object>
+                <object data="/assets/svg/menu.svg" width="16"
+                    style="pointer-events: none; filter: invert(100%);"></object>
             </div>
         </li>
     </ul>
