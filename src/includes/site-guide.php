@@ -1,5 +1,7 @@
 <div class="site-guide">
-    <h3 style="font-size: 12; font-weight: 300;color: #df8886">titouan.ch index</h3>
+    <h3>
+        <a href="/home" style="font-size: 12; font-weight: 300;color: #df8886">titouan.ch index</a>
+    </h3>
     <ul class="site-index" style="list-style-type: none; padding: 0">
         <li>
             <div class="year">2020</div>
