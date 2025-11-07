@@ -61,6 +61,6 @@
         possible structure.
     </p>
 
-    <script src="./scripts/macroevolution/newick.js"></script>
+    <script src="/assets/js/macroevolution/newick.js"></script>
 
 </div>

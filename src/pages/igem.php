@@ -24,9 +24,11 @@
     </p>
 
     <div style="display: flex; gap: 10%; justify-content: center;">
-        <div class="image-div" style="flex: 1; max-width: 250px"><img src="./images/bottropensis_petri_streptomyces.jpg"
-                alt="Mathematician John Horton Conway"><br>S. bottropensis culture inside a petri dish</div>
-        <div class="image-div" style="flex: 1; max-width: 250px"><img src="./images/bottropensis_micro_streptomyces.jpg"
+        <div class="image-div" style="flex: 1; max-width: 250px"><img
+                src="/assets/images/bottropensis_petri_streptomyces.jpg" alt="Mathematician John Horton Conway"><br>S.
+            bottropensis culture inside a petri dish</div>
+        <div class="image-div" style="flex: 1; max-width: 250px"><img
+                src="/assets/images/bottropensis_micro_streptomyces.jpg"
                 alt="S. bottropensis culture seen from a microscope"><br>S. bottropensis culture seen from a microscope
         </div>
     </div>
@@ -51,7 +53,7 @@
         scenarios by adjusting initial parameters and observing the resulting changes in metabolite quantities over
         time. Here is a screenshot of the software I developped:
     </p>
-    <div class="image-div" style="max-width: 900px; margin: auto"><img src="./images/modeling_software_igem.png"
+    <div class="image-div" style="max-width: 900px; margin: auto"><img src="/assets/images/modeling_software_igem.png"
             alt="Screenshot of the software I developed for the iGEM competition"><br>Screenshot of the simple simulator
         I developped for the competiton</div>
     <p>

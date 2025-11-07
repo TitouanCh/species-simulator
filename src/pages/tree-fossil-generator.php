@@ -39,7 +39,7 @@
         a big role in figuring out how different species are related to each other. This has led scientists to develop
         models that can include information from fossils when studying evolutionary relationships.
     </p>
-    <div class="image-div"><img src="./images/Ammonite.jpg" alt="Ammonite depicted from fossil"
+    <div class="image-div"><img src="/assets/images/Ammonite.jpg" alt="Ammonite depicted from fossil"
             style="max-width: 50%"><br>How scientists believed ammonite looked from fossil data in 1908</div>
     <h2>The challenges of working with fossil data</h2>
     <p>
@@ -67,7 +67,7 @@
             href="https://cran.r-project.org/web/packages/FossilSimShiny/">FossilSimShiny</a>. They provide powerful
         tools for simulating and visualizing evolutionary scenarios.
     </p>
-    <script src="./scripts/macroevolution/treeGen.js"></script>
-    <script src="./scripts/macroevolution/newick.js"></script>
+    <script src="/assets/js/macroevolution/treeGen.js"></script>
+    <script src="/assets/js/macroevolution/newick.js"></script>
     <script>generateTreeFromData();</script>
 </div>
