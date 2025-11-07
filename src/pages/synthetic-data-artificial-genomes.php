@@ -12,7 +12,8 @@
     <p>
         In early 2023, I had the opportunity to work as a part-time research assistant on a cool project that involved
         training neural network models on human genomes. One of the primary challenges in this domain is the limited
-        availability of genomic data and privacy concerns that limit the vailable data to researchers. While initiatives
+        availability of genomic data and privacy concerns that limit the available data to researchers. While
+        initiatives
         like the Human Genome Project have provided invaluable resources, the quantity of real human genome data remains
         restricted, which poses significant challenges when training machine learning models or neural networks.
     </p>
@@ -45,7 +46,7 @@
         generator and a discriminator in a competitive process. The generator tries to create realistic data, while the
         discriminator evaluates how similar the generated data is to the real data.</p>
 
-    <div class="image-div" style="max-width: 900px; margin: auto"><img src="./images/wgan.png"
+    <div class="image-div" style="max-width: 900px; margin: auto"><img src="/assets/images/wgan.png"
             alt="Architecture of a generative adversial network in the context of synthetic genomes"><br>Overview of the
         architecture of a GAN <a href="https://doi.org/10.1146/annurev-biodatasci-020722-115651">source</a></div>
 
@@ -60,23 +61,24 @@
         predict an individual's geographic ancestry based on their genomic data. For instance, it's possible to
         determine the continent or even specific regions an individual comes from based solely on their genome and their
         SNPs (single nucleotide polymorphs).</p>
-    <div class="image-div" style="max-width: 700px; margin: auto"><img src="./images/1000genome.jpg"
+    <div class="image-div" style="max-width: 700px; margin: auto"><img src="/assets/images/1000genome.jpg"
             alt="Map of different genomes of the 1000 genomes project"><br>Map of different example genomes <a
             href="https://en.wikipedia.org/wiki/1000_Genomes_Project">source</a></div>
     <p>To label our synthetic data, I employed a k-nearest neighbors (KNN) algorithm trained on our orignal real genomic
         data. KNN is a simple yet effective classification model that assigns labels to data points based on the
         majority label of its closest neighbors in the dataset.</p>
-    <div class="image-div" style="max-width: 450px; margin: auto"><img src="./images/knn.png"
+    <div class="image-div" style="max-width: 450px; margin: auto"><img src="/assets/images/knn.png"
             alt="Single step of the knn algorithm"><br>Knn algorithm <a
             href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">source</a></div>
     <p>By using real genomic data, we could train the KNN to classify synthetic genomes according to their probable
         population group. We also ensured that our synthetic data reflected real-world population distributions.</p>
-    <div class="image-div" style="max-width: 450px; margin: auto"><img src="./images/bar_plot_real_superpopulation.png"
+    <div class="image-div" style="max-width: 450px; margin: auto"><img
+            src="/assets/images/bar_plot_real_superpopulation.png"
             alt="Proportion of each superpopulation in the real data"><br>Bar graph showing the different proportion of
         haplotype of each superpopulation in the <b>real</b> data</div>
     <br>
     <div class="image-div" style="max-width: 450px; margin: auto"><img
-            src="./images/bar_plot_synthetic_superpopulation.png"
+            src="/assets/images/bar_plot_synthetic_superpopulation.png"
             alt="Proportion of each superpopulation in the real data"><br>Bar graph showing the different proportion of
         haplotype of each superpopulation in the <b>synthetic</b> data</div>
     <p>It's interesting to note that it seems that some proportions of certain populations were exagerated by our WGAN.
@@ -92,7 +94,7 @@
     <p>The goal was to determine whether the synthetic data was comparable to real data in terms of training
         effectiveness. If the synthetic data retained the key features of the real data, the performance of the neural
         network trained on synthetic data should be similar to that trained on real data.</p>
-    <div class="image-div" style="max-width: 900px; margin: auto"><img src="./images/artificial_genome_result.PNG"
+    <div class="image-div" style="max-width: 900px; margin: auto"><img src="/assets/images/artificial_genome_result.PNG"
             alt="Results"><br>Results</div>
     <p>Our results were encouraging. LAI-NET achieved comparable performance regardless of whether it was trained on
         real or synthetic genomic data. This finding suggested that the synthetic data successfully preserved the

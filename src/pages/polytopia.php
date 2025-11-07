@@ -13,7 +13,7 @@
         "Polytopia".
     </p>
 
-    <div class="image-div" style="max-width: 900px; margin: auto"><img src="./images/polytopia.jpg"
+    <div class="image-div" style="max-width: 900px; margin: auto"><img src="/assets/images/polytopia.jpg"
             alt="Picture of the game polytopia"><br>Marketing image of the game Polytopia that inspired me</div>
 
     <p>
@@ -42,7 +42,7 @@
         fully utilized my knowledge of shaders and my experience of the Godot engine to create a performant yet
         beautiful (at least in my opinion) game world.</p>
 
-    <div class="image-div" style="max-width: 900px; margin: auto"><img src="./images/simple_landscape.png"
+    <div class="image-div" style="max-width: 900px; margin: auto"><img src="/assets/images/simple_landscape.png"
             alt="Simple terrain rendered by the godot client"><br>Simple terrain rendered by the godot client
     </div>
 
